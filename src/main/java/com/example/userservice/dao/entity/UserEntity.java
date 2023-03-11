@@ -51,9 +51,9 @@ public class UserEntity {
         this.uuid = uuid;
         this.mail = mail;
         this.fio = fio;
+        this.password = password;
         this.role = role;
         this.status = status;
-        this.password = password;
         this.dt_create = dt_create;
         this.dt_update = dt_update;
     }

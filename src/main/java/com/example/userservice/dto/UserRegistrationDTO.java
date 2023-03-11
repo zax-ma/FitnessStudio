@@ -1,14 +1,24 @@
 package com.example.userservice.dto;
 
 
+import com.example.userservice.utils.validation.annotation.CharSize;
+import com.example.userservice.utils.validation.annotation.EmailPattern;
+import com.example.userservice.utils.validation.annotation.NotEmptyOrBlank;
 
 public class UserRegistrationDTO {
 
  //   @JsonProperty("mail")
+    @NotEmptyOrBlank
+    @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2, 7}")
     private String mail;
  //   @JsonProperty("fio")
+
+    @NotEmptyOrBlank
     private String fio;
 //    @JsonProperty("password")
+
+    @NotEmptyOrBlank
+    @CharSize(min = "3", max = "16")
     private String password;
 
     public UserRegistrationDTO() {

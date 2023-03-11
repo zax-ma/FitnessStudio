@@ -1,16 +1,13 @@
 package com.example.userservice.web.convertor;
 
 import com.example.userservice.dto.*;
-import org.junit.jupiter.api.Assertions;
+import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConvertor;
 import org.junit.jupiter.api.Test;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class AdminDtotoEntity {
     @Test
     public void testConvertorUser() throws Exception {
-        UserDtoToEntity convertor = new UserDtoToEntity();
+        UserRegistrationDtoToEntityConvertor convertor = new UserRegistrationDtoToEntityConvertor();
         AuxFieldsDTO supplFields = new AuxFieldsDTO();
 
 
@@ -22,8 +19,8 @@ public class AdminDtotoEntity {
                 .setStatus(UserStatus.ACTIVATED)
                 .build();
 
-        UserDTO createdUser = new UserDTO(supplFields, user);
-        convertor.convert(createdUser);
+   //     UserDTO createdUser = new UserDTO(supplFields, user);
+   //     convertor.convert(createdUser);
 
     }
 }

@@ -8,8 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/api/v1/users")
@@ -28,7 +26,9 @@ public class UserRegistrationController {
     public ResponseEntity<?> create(@RequestBody UserRegistrationDTO userRegistrationDTO){
         userRegistrationService.registration(userRegistrationDTO);
         return ResponseEntity
-                .status(HttpStatus.CREATED).build();
+                .status(HttpStatus.CREATED)
+                .build();
+
     }
 
     @GetMapping("/verification")
