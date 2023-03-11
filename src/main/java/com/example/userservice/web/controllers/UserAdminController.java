@@ -1,5 +1,6 @@
 package com.example.userservice.web.controllers;
 
+import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.service.api.IUserAdminService;
@@ -31,7 +32,7 @@ public class UserAdminController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    protected Page<UserDTO> getUserPage(Pageable page, int size){
+    protected PageDTO<UserDTO> getUserPage(int page, int size){
         return this.userAdminService.getUserPage(page, size);
     }
 
@@ -42,10 +43,10 @@ public class UserAdminController {
     }
 
     @PutMapping("/{uuid}/dt_update/{ft_update}")
-    protected ResponseEntity<UserDTO> updateUser(UUID uuid, LocalDateTime dt_update,
+    protected ResponseEntity<?> updateUser(UUID uuid, LocalDateTime dt_update,
                                                   @RequestBody UserAdminDTO user){
         return ResponseEntity
-                .ok(this.userAdminService.updateUser(uuid, dt_update, user));
+                .ok("User was updated");
     }
 
 }

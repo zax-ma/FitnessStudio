@@ -1,5 +1,6 @@
 package com.example.userservice.service.api;
 
+import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import org.springframework.data.domain.Page;
@@ -11,10 +12,10 @@ import java.util.UUID;
 public interface IUserAdminService {
 
     void createUser(UserAdminDTO userCreationAdminDto);
-    Page<UserDTO> getUserPage(Pageable page, int size);
+    PageDTO<UserDTO> getUserPage(int page, int size);
 
     UserDTO getUserInfo(UUID uuid);
 
-    UserDTO updateUser(UUID uuid, LocalDateTime dt_update, UserAdminDTO user);
+   void updateUser(UUID uuid, LocalDateTime dt_update, UserAdminDTO user);
 
 }

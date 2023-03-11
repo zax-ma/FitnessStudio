@@ -7,9 +7,6 @@ public class SingleErrorResponse extends RuntimeException{
 
     private List<Error> errors = new ArrayList<>();
 
-    public SingleErrorResponse(String message, Throwable logref) {
-        this.errors.add(new Error(message, logref));
-    }
     public SingleErrorResponse(String message) {
         this.errors.add(new Error(message));
     }
