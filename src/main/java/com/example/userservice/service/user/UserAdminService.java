@@ -10,12 +10,14 @@ import com.example.userservice.utils.exceptions.SingleErrorResponse;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
+
 
 
 @Service
@@ -24,9 +26,18 @@ public class UserAdminService implements IUserAdminService {
     private IUserRepository userRepository;
     private Converter<UserAdminDTO, UserEntity> toEntityConverter;
     private Converter<UserEntity, UserDTO> toDtoConverter;
-    private PasswordEncoder passwordEncoder;
+ //   private PasswordEncoder passwordEncoder;
 
     public UserAdminService(IUserRepository userRepository,
+                            Converter<UserAdminDTO, UserEntity> toEntityConverter,
+                            Converter<UserEntity, UserDTO> toDtoConverter) {
+        this.userRepository = userRepository;
+        this.toEntityConverter = toEntityConverter;
+        this.toDtoConverter = toDtoConverter;
+
+    }
+
+/*    public UserAdminService(IUserRepository userRepository,
                             Converter<UserAdminDTO, UserEntity> toEntityConverter,
                             Converter<UserEntity, UserDTO> toDtoConverter,
                             PasswordEncoder passwordEncoder) {
@@ -34,7 +45,7 @@ public class UserAdminService implements IUserAdminService {
         this.toEntityConverter = toEntityConverter;
         this.toDtoConverter = toDtoConverter;
         this.passwordEncoder = passwordEncoder;
-    }
+    }*/
 
     @Override
     public void createUser(UserAdminDTO userAdminDto) {
@@ -42,11 +53,11 @@ public class UserAdminService implements IUserAdminService {
             //  проверка на валидность и существование пользователы
             UserEntity newUser = this.toEntityConverter.convert(userAdminDto);
             assert newUser != null;
-            newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
+            newUser.setPassword(userAdminDto.getPassword()); //newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
             this.userRepository.save(newUser);
         } else {
             throw
-                    new SingleErrorResponse("Email is already registered");
+                    new NoSuchElementException("Email is already registered");
         }
     }
 
@@ -86,7 +97,7 @@ public class UserAdminService implements IUserAdminService {
         if (user.getMail().equals(this.userRepository.findByMail(user.getMail()))
              && !uuid.equals(this.userRepository.findById(uuid))) {
 
-            throw new SingleErrorResponse("This e-mail is already registered");
+            throw new SingleErrorResponse("This e-mail is already exist");
 
         } else {
             if (userUpdate.getDt_update().equals(lst_update)) {
@@ -96,8 +107,7 @@ public class UserAdminService implements IUserAdminService {
                 throw new SingleErrorResponse("This user was already updated");
             }
         }
-
-
     }
+
 
 }

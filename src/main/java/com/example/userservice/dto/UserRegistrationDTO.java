@@ -1,15 +1,19 @@
 package com.example.userservice.dto;
 
 
+import com.example.userservice.dao.entity.UserEntity;
+import com.example.userservice.dao.repo.IUserRepository;
+import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConverter;
 import com.example.userservice.utils.validation.annotation.CharSize;
 import com.example.userservice.utils.validation.annotation.EmailPattern;
 import com.example.userservice.utils.validation.annotation.NotEmptyOrBlank;
+
 
 public class UserRegistrationDTO {
 
  //   @JsonProperty("mail")
     @NotEmptyOrBlank
-    @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2, 7}")
+    @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}")
     private String mail;
  //   @JsonProperty("fio")
 
@@ -23,7 +27,6 @@ public class UserRegistrationDTO {
 
     public UserRegistrationDTO() {
     }
-
     public UserRegistrationDTO(String mail, String fio, String password) {
         this.mail = mail;
         this.fio = fio;
@@ -34,23 +37,55 @@ public class UserRegistrationDTO {
         return mail;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
-    }
-
     public String getFio() {
         return fio;
-    }
-
-    public void setFio(String fio) {
-        this.fio = fio;
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public static class UserRegistrationBuilder {
+
+        private String mail;
+        private String fio;
+        private String password;
+
+        public UserRegistrationBuilder() {
+        }
+
+        public static UserRegistrationBuilder create() {
+            return new UserRegistrationBuilder();
+        }
+
+
+        public UserRegistrationBuilder setFio(String fio) {
+            this.fio = fio;
+            return this;
+        }
+
+        public UserRegistrationBuilder setMail(String mail) {
+            this.mail = mail;
+            return this;
+        }
+
+        public UserRegistrationBuilder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+
+        public UserRegistrationDTO build() {
+            return new UserRegistrationDTO(mail, fio, password);
+        }
+
+        @Override
+        public String toString() {
+            return "AdminUserBuilder{" +
+                    "mail='" + mail + '\'' +
+                    ", fio='" + fio + '\'' +
+                    ", password='" + password + '\'' +
+                    '}';
+        }
     }
+
 }

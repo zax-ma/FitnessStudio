@@ -4,14 +4,17 @@ import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dto.AuxFieldsDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-public class UserAdminDtoToEntityConvertor implements Converter<UserAdminDTO, UserEntity> {
+@Component
+public class UserAdminDtoToEntityConverter implements Converter<UserAdminDTO, UserEntity> {
 
-    private AuxFieldsDTO auxFieldsDTO;
 
     @Override
     public UserEntity convert(UserAdminDTO source) {
-        return new UserEntity(auxFieldsDTO.getUuid(),
+        AuxFieldsDTO auxFieldsDTO = new AuxFieldsDTO();
+        return new UserEntity(
+                auxFieldsDTO.getUuid(),
                 source.getMail(),
                 source.getFio(),
                 source.getPassword(),
@@ -20,4 +23,5 @@ public class UserAdminDtoToEntityConvertor implements Converter<UserAdminDTO, Us
                 auxFieldsDTO.getDt_create(),
                 auxFieldsDTO.getDt_update());
     }
+
 }

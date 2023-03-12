@@ -14,6 +14,6 @@ public class EmailPatternException extends RequestException{
 
     @Override
     public String getMessage() {
-        return "Ooops, " + this.paramName + "is not an e-mail";
+        return "Ooops, " + this.paramName + " is not an e-mail";
     }
 }

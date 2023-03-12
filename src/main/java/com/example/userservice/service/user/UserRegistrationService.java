@@ -5,31 +5,49 @@ import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.service.api.IUserRegistrationService;
-import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConvertor;
+import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConverter;
+import com.example.userservice.utils.exceptions.SingleErrorResponse;
+import org.springframework.core.convert.converter.Converter;
 
-import java.util.UUID;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserRegistrationService implements IUserRegistrationService {
 
-    IUserRepository userRepository;
+    IUserRepository repository;
+    Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
+    Converter<UserEntity, UserDTO> toDTOConverter;
+  //  PasswordEncoder passwordEncoder;
 
-    UserRegistrationDtoToEntityConvertor convertor;
+    public UserRegistrationService(IUserRepository repository,
+                                   Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
+                                   Converter<UserEntity, UserDTO> toDTOConverter) {
+        this.repository = repository;
+        this.toEntityConverter = toEntityConverter;
+        this.toDTOConverter = toDTOConverter;
 
-    public UserRegistrationService(IUserRepository userRepository, UserRegistrationDtoToEntityConvertor convertor) {
-        this.userRepository = userRepository;
-        this.convertor = convertor;
     }
+
+/*    public UserRegistrationService(IUserRepository repository,
+                                   Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
+                                   Converter<UserEntity, UserDTO> toDTOConverter,
+                                   PasswordEncoder passwordEncoder) {
+        this.repository = repository;
+        this.toEntityConverter = toEntityConverter;
+        this.toDTOConverter = toDTOConverter;
+        this.passwordEncoder = passwordEncoder;
+    }*/
 
     @Override
     public void registration(UserRegistrationDTO userRegistrationDTO) {
         //   регистрация + проверка на валидность и существование мыла
-        if (!userRepository.existsByMail(userRegistrationDTO.getMail())) {
-            UserEntity newUser = this.convertor.convert(userRegistrationDTO);
+        if (!repository.existsByMail(userRegistrationDTO.getMail())) {
+            UserEntity newUser = this.toEntityConverter.convert(userRegistrationDTO);
             assert newUser != null;
-            this.userRepository.save(newUser);
+            this.repository.save(newUser);
         } else {
             throw
-                    new NullPointerException();
+                    new SingleErrorResponse("User with this email is already registered");
         }
     }
 

@@ -26,7 +26,11 @@ public class UserEntity {
         @NotBlank
         @ManyToOne
         @Enumerated(EnumType.STRING)*/
+
+    @Column(name = "password")
+    private String password;
     @Column(name = "role")
+    @Enumerated(EnumType.STRING)
     private UserRole role;
     /*    @JoinColumn(name = "status", nullable = false)
         @NotNull
@@ -34,9 +38,9 @@ public class UserEntity {
         @ManyToOne
         @Enumerated(EnumType.STRING)*/
     @Column(name = "status")
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
-    @Column(name = "password")
-    private String password;
+
     @Column(name = "dt_create")
     private LocalDateTime dt_create;
 

@@ -3,10 +3,14 @@ package com.example.userservice.utils.convertors;
 import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dto.UserDTO;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
-public class EntityToDtoConvertor implements Converter<UserEntity, UserDTO> {
+@Component
+public class EntityToDtoConverter implements Converter<UserEntity, UserDTO> {
     @Override
     public UserDTO convert(UserEntity source) {
         return null;
     }
+
+
 }
