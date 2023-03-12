@@ -1,6 +1,8 @@
-package com.example.userservice.utils.exceptions;
+package com.example.userservice.utils.exceptions.annotations;
 
-public class EmailPatternException extends RequestException{
+import com.example.userservice.utils.exceptions.RequestException;
+
+public class EmailPatternException extends RequestException {
     private final String paramName;
 
     public EmailPatternException(String paramName) {

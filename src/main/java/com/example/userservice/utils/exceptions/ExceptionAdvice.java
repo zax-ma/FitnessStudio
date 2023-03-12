@@ -1,6 +1,7 @@
 package com.example.userservice.utils.exceptions;
 
 import com.example.userservice.dto.ErrorDTO;
+import com.example.userservice.utils.exceptions.annotations.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

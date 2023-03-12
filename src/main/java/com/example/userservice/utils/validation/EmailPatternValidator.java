@@ -1,6 +1,6 @@
 package com.example.userservice.utils.validation;
 
-import com.example.userservice.utils.exceptions.EmailPatternException;
+import com.example.userservice.utils.exceptions.annotations.EmailPatternException;
 import com.example.userservice.utils.validation.annotation.EmailPattern;
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import jakarta.validation.ValidationException;

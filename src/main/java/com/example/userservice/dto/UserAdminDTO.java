@@ -11,11 +11,7 @@ import jakarta.validation.constraints.Pattern;
 
 public class UserAdminDTO {
     @NotEmptyOrBlank
-
-    @Pattern(regexp = "/^[a-zA-Z0-9_+&*-] + (?:\\\\\\.[a-zA-Z0-9_+&*-]) +@(?:[a-zA-Z0-9-]+\\\\\\.) + [a-zA-Z]{2,7}/")
     @EmailPattern("^(.+)@(.+)$") //   ^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$
-    @NotEmpty
-    @NotBlank
     private String mail;
     @NotEmptyOrBlank
     private String fio;

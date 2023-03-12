@@ -3,6 +3,8 @@ package com.example.userservice.dto;
 
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -11,10 +13,10 @@ public class AuxFieldsDTO {
 
     private UUID uuid;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dt_create;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dt_update;
 
 

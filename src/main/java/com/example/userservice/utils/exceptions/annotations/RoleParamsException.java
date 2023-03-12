@@ -1,6 +1,8 @@
-package com.example.userservice.utils.exceptions;
+package com.example.userservice.utils.exceptions.annotations;
 
-public class RoleParamsException extends RequestException{
+import com.example.userservice.utils.exceptions.RequestException;
+
+public class RoleParamsException extends RequestException {
 
     private final String paramName;
 

@@ -1,9 +1,7 @@
 package com.example.userservice.utils.validation;
 
-import com.example.userservice.utils.exceptions.CharSizeException;
-import com.example.userservice.utils.exceptions.EmailPatternException;
+import com.example.userservice.utils.exceptions.annotations.CharSizeException;
 import com.example.userservice.utils.validation.annotation.CharSize;
-import com.example.userservice.utils.validation.annotation.EmailPattern;
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import jakarta.validation.ValidationException;
 

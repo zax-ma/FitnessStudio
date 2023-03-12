@@ -1,26 +1,47 @@
 package com.example.userservice.dto;
 
 
-import com.example.userservice.dao.entity.UserEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class UserDTO {
-    private AuxFieldsDTO auxFieldsDTO;
-    private UserStatus status;
-    private UserRole role;
-    private String fio;
-    private String mail;
-    private String password;
-    private LocalDateTime dt_create;
-    private LocalDateTime dt_update;
+    @JsonProperty("id")
+    UUID uuid;
+    @JsonProperty("dt_create")
+    LocalDateTime dt_create;
+    @JsonProperty("dt_update")
+    LocalDateTime dt_update;
+    @JsonProperty("status") UserStatus status;
+    @JsonProperty("role") UserRole role;
+    @JsonProperty("fio") String fio;
+    @JsonProperty("mail") String mail;
+    @JsonProperty("password") String password;
 
-    public UserDTO() {
+
+    public UserDTO(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update, UserStatus status, UserRole role, String fio, String mail, String password) {
+        this.uuid = uuid;
+        this.dt_create = dt_create;
+        this.dt_update = dt_update;
+        this.status = status;
+        this.role = role;
+        this.fio = fio;
+        this.mail = mail;
+        this.password = password;
     }
 
-    public AuxFieldsDTO getAuxFieldsDTO() {
-        return auxFieldsDTO;
+    public UUID getUuid() {
+        return uuid;
+    }
+
+    public LocalDateTime getDt_create() {
+        return dt_create;
+    }
+
+    public LocalDateTime getDt_update() {
+        return dt_update;
     }
 
     public UserStatus getStatus() {
@@ -43,60 +64,4 @@ public class UserDTO {
         return password;
     }
 
-    public LocalDateTime getDt_create() {
-        return dt_create;
-    }
-
-    public LocalDateTime getDt_update() {
-        return dt_update;
-    }
-
-    public class UserDtoBuilder {
-
-        private UUID uuid;
-        private LocalDateTime dt_create;
-        private LocalDateTime dt_update;
-        private UserStatus status;
-        private UserRole role;
-        private String fio;
-        private String mail;
-        private String password;
-
-
-        public UserDtoBuilder() {
-        }
-
-        public UserDtoBuilder create() {
-            return new UserDtoBuilder();
-        }
-
-
-        public UserDtoBuilder setFio(String fio) {
-            this.fio = fio;
-            return this;
-        }
-
-        public UserDtoBuilder setMail(String mail) {
-            this.mail = mail;
-            return this;
-        }
-
-        public UserDtoBuilder setPassword(String password) {
-            this.password = password;
-            return this;
-        }
-
-        public static UserDTO build() {
-            return new UserDTO();
-        }
-    }
-
-    public static UserRegistrationDTO fromEntity(UserEntity entity){
-        return UserRegistrationDTO.UserRegistrationBuilder
-                .create()
-                .setFio(entity.getFio())
-                .setMail(entity.getMail())
-                .setPassword(entity.getPassword()).build();
-
-    }
 }

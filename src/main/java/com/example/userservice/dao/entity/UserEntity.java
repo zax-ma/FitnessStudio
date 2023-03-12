@@ -13,20 +13,11 @@ import java.util.UUID;
 public class UserEntity {
     @Id
     @Column(name = "id")
- //   @GeneratedValue(strategy = GenerationType.UUID)
     private UUID uuid;
     @Column(name = "mail")
-
     private String mail;
     @Column(name = "fio")
-
     private String fio;
-    /*    @JoinColumn(name = "role", nullable = false)
-        @NotNull
-        @NotBlank
-        @ManyToOne
-        @Enumerated(EnumType.STRING)*/
-
     @Column(name = "password")
     private String password;
     @Column(name = "role")
@@ -60,9 +51,6 @@ public class UserEntity {
         this.status = status;
         this.dt_create = dt_create;
         this.dt_update = dt_update;
-    }
-
-    public UserEntity(UUID uuid, String mail, String password, UserRole role, UserStatus status, LocalDateTime dt_create, LocalDateTime dt_update) {
     }
 
     public UUID getUuid() {

@@ -12,12 +12,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import org.springframework.stereotype.Service;
+
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -50,7 +54,6 @@ public class UserAdminService implements IUserAdminService {
     @Override
     public void createUser(UserAdminDTO userAdminDto) {
         if (!userRepository.existsByMail(userAdminDto.getMail())) {
-            //  проверка на валидность и существование пользователы
             UserEntity newUser = this.toEntityConverter.convert(userAdminDto);
             assert newUser != null;
             newUser.setPassword(userAdminDto.getPassword()); //newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
@@ -66,11 +69,11 @@ public class UserAdminService implements IUserAdminService {
         Page<UserEntity> userEntityPage = userRepository.findAll(PageRequest.of(page, size));
         List<UserDTO> users = new ArrayList<>();
 
-        for (UserEntity userEntity : userEntityPage){
+        for (UserEntity userEntity : userRepository.findAll()){
             users.add(toDtoConverter.convert(userEntity));
         }
 
-        PageDTO<UserDTO> userDTOPage = new PageDTO<>(
+        return new PageDTO<>(
                 userEntityPage.getNumber(),
                 userEntityPage.getSize(),
                 userEntityPage.getTotalPages(),
@@ -79,18 +82,18 @@ public class UserAdminService implements IUserAdminService {
                 userEntityPage.getNumberOfElements(),
                 userEntityPage.isLast(),
                 users);
-        return userDTOPage;
     }
 
     @Override
     public UserDTO getUserInfo(UUID uuid) {
+
         UserEntity userInfo = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new SingleErrorResponse("User with uuid " + uuid + " was not found"));
         return this.toDtoConverter.convert(userInfo);
     }
 
     @Override
-    public void updateUser(UUID uuid, LocalDateTime lst_update, UserAdminDTO user) {
+    public void updateUser(UUID uuid, Timestamp lst_update, UserAdminDTO user) {
         UserEntity userUpdate = this.userRepository.findById(uuid)
                 .orElseThrow(() -> new SingleErrorResponse("User with uuid " + uuid + " was not found"));
 
@@ -100,8 +103,14 @@ public class UserAdminService implements IUserAdminService {
             throw new SingleErrorResponse("This e-mail is already exist");
 
         } else {
-            if (userUpdate.getDt_update().equals(lst_update)) {
+            if (Timestamp.valueOf(userUpdate.getDt_update()).equals(lst_update)) {
                 userUpdate.setMail(user.getMail());
+                userUpdate.setDt_update(LocalDateTime.now());
+                userUpdate.setRole(user.getRole());
+                userUpdate.setStatus(user.getStatus());
+                userUpdate.setFio(user.getFio());
+                userUpdate.setPassword(user.getPassword());
+                userRepository.save(userUpdate);
             }
             else {
                 throw new SingleErrorResponse("This user was already updated");

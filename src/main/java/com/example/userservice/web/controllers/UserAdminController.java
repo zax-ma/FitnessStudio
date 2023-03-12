@@ -6,6 +6,9 @@ import com.example.userservice.dto.UserDTO;
 import com.example.userservice.service.api.IUserAdminService;
 
 import com.example.userservice.utils.validation.annotation.ValidParams;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,6 +26,8 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/users")
 public class UserAdminController {
+
+    ObjectMapper objectMapper = new ObjectMapper().findAndRegisterModules();
 private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController.class);
     private IUserAdminService userAdminService;
 
@@ -29,7 +36,7 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
     }
     @ValidParams
     @RequestMapping(method = RequestMethod.POST)
-    protected ResponseEntity<?> create(@RequestBody UserAdminDTO userCreationAdminDto){
+    public ResponseEntity<?> create(@RequestBody UserAdminDTO userCreationAdminDto){
         userAdminService.createUser(userCreationAdminDto);
         LOGGER.info("hu");
         return ResponseEntity
@@ -37,26 +44,26 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
 
     }
 
-
     @RequestMapping(method = RequestMethod.GET)
-    protected PageDTO<UserDTO> getUserPage(int page, int size){
+    public PageDTO<UserDTO> getUserPage(int page, int size){
         return this.userAdminService.getUserPage(page, size);
     }
 
     @GetMapping("/{uuid}")
-    protected ResponseEntity<UserDTO> getUserInfo(UUID uuid){
+    public ResponseEntity<UserDTO> getUserInfo(@PathVariable("uuid") UUID uuid) throws JsonProcessingException {
+    //    String json = objectMapper.writeValueAsString(this.userAdminService.getUserInfo(uuid));
         return ResponseEntity
                 .ok(this.userAdminService.getUserInfo(uuid));
     }
 
     @PutMapping("/{uuid}/dt_update/{dt_update}")
-    protected ResponseEntity<?> updateUser(
+    public ResponseEntity<UserDTO> updateUser(
             @PathVariable("uuid") UUID uuid,
-            @PathVariable("dt_update") LocalDateTime dt_update,
-            @RequestBody UserAdminDTO user){
+            @PathVariable("dt_update") Timestamp dt_update,
+            @RequestBody UserAdminDTO user) throws JsonProcessingException {
         userAdminService.updateUser(uuid, dt_update, user);
         return ResponseEntity
-                .ok("User was updated: " + this.userAdminService.getUserInfo(uuid));
+                .ok(this.userAdminService.getUserInfo(uuid));
     }
 
 }

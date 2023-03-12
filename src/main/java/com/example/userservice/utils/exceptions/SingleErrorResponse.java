@@ -3,11 +3,12 @@ package com.example.userservice.utils.exceptions;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SingleErrorResponse extends RuntimeException{
+public class SingleErrorResponse extends RequestException{
 
     private List<Error> errors = new ArrayList<>();
 
     public SingleErrorResponse(String message) {
+
         this.errors.add(new Error(message));
     }
 
@@ -15,12 +16,14 @@ public class SingleErrorResponse extends RuntimeException{
         return errors;
     }
 
-    public void setErrors(List<Error> errors) {
-        this.errors = errors;
+
+    @Override
+    public String getCode() {
+        return null;
     }
 
-    public void setErrors(Error error) {
-        this.errors.add(error);
+    @Override
+    public String getMessage() {
+        return getErrors().toString();
     }
-
 }

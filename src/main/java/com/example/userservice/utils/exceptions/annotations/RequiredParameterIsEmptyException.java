@@ -1,6 +1,8 @@
-package com.example.userservice.utils.exceptions;
+package com.example.userservice.utils.exceptions.annotations;
 
-public class RequiredParameterIsEmptyException extends RequestException{
+import com.example.userservice.utils.exceptions.RequestException;
+
+public class RequiredParameterIsEmptyException extends RequestException {
     private final String paramName;
 
     public RequiredParameterIsEmptyException(String paramName) {
