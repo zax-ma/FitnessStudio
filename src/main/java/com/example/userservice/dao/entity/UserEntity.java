@@ -3,8 +3,6 @@ package com.example.userservice.dao.entity;
 import com.example.userservice.dto.UserRole;
 import com.example.userservice.dto.UserStatus;
 import jakarta.persistence.*;
-
-
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -23,21 +21,13 @@ public class UserEntity {
     @Column(name = "role")
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    /*    @JoinColumn(name = "status", nullable = false)
-        @NotNull
-        @NotBlank
-        @ManyToOne
-        @Enumerated(EnumType.STRING)*/
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private UserStatus status;
-
     @Column(name = "dt_create")
     private LocalDateTime dt_create;
-
     @Column(name = "dt_update")
     private LocalDateTime dt_update;
-
 
     public UserEntity() {
     }
@@ -100,7 +90,6 @@ public class UserEntity {
     public void setPassword(String password) {
         this.password = password;
     }
-
 
     public LocalDateTime getDt_create() {
         return dt_create;

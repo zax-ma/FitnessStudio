@@ -4,7 +4,6 @@ import com.example.userservice.dto.UserRole;
 import com.example.userservice.utils.exceptions.annotations.RequiredParameterIsEmptyException;
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import jakarta.validation.ValidationException;
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Collection;

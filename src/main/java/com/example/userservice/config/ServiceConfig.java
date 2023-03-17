@@ -11,9 +11,9 @@ import com.example.userservice.service.api.IUserAuthenticationService;
 import com.example.userservice.service.api.IUserRegistrationService;
 import com.example.userservice.service.user.UserAdminService;
 import com.example.userservice.service.user.UserRegistrationService;
-
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Configuration
@@ -26,12 +26,6 @@ public class ServiceConfig {
         return new UserAdminService(repository, toEntityConverter, toDTOConverter);
     }
 
-    public IUserRegistrationService userRegistrationService(IUserRepository repository,
-                                                            Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
-                                                            Converter<UserEntity, UserDTO> toDTOConverter
-                                                            ){
-        return new UserRegistrationService(repository, toEntityConverter, toDTOConverter);
-    }
 
 /*    public IUserAdminService userAdminService(IUserRepository repository,
                                               Converter<UserAdminDTO, UserEntity> toEntityConverter,
@@ -40,13 +34,14 @@ public class ServiceConfig {
 
         return new UserAdminService(repository, toEntityConverter, toDTOConverter, passwordEncoder);
     }
+    */
 
     public IUserRegistrationService userRegistrationService(IUserRepository repository,
                                                             Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
                                                             Converter<UserEntity, UserDTO> toDTOConverter,
                                                             PasswordEncoder passwordEncoder){
         return new UserRegistrationService(repository, toEntityConverter, toDTOConverter, passwordEncoder);
-    }*/
+    }
 
     public IEmailVerificationService emailVerificationService(){
         return null;

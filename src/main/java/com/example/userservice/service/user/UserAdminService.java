@@ -7,21 +7,17 @@ import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.service.api.IUserAdminService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
+import com.example.userservice.utils.exceptions.errors.EmailAlreadyRegisteredException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-
 import org.springframework.stereotype.Service;
-
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -60,7 +56,7 @@ public class UserAdminService implements IUserAdminService {
             this.userRepository.save(newUser);
         } else {
             throw
-                    new NoSuchElementException("Email is already registered");
+                    new EmailAlreadyRegisteredException();
         }
     }
 
@@ -113,7 +109,7 @@ public class UserAdminService implements IUserAdminService {
                 userRepository.save(userUpdate);
             }
             else {
-                throw new SingleErrorResponse("This user was already updated");
+                throw new EmailAlreadyRegisteredException();
             }
         }
     }

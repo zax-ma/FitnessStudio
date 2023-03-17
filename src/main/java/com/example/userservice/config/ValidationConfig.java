@@ -6,7 +6,6 @@ import com.example.userservice.utils.validation.api.IParamValidator;
 import com.example.userservice.utils.validation.annotation.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,7 @@ public class ValidationConfig {
     public IParamValidator getParamValidator(){
         Map<Class<? extends Annotation>, IFieldValidator> validatorMap = new HashMap<>();
         validatorMap.put(EmailPattern.class, new EmailPatternValidator());
-        validatorMap.put(NotEmptyOrBlank.class, new NotEmptyOrBlankValidator());
+        validatorMap.put(NotEmptyNorBlank.class, new NotEmptyNorBlankValidator());
         validatorMap.put(CharSize.class, new CharSizeValidator());
         validatorMap.put(RoleParams.class, new RoleParamsValidator());
         return new AnnotationBasedParamValidator(validatorMap);

@@ -1,27 +1,23 @@
 package com.example.userservice.dto;
 
-
-import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.dao.repo.IUserRepository;
-import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConverter;
 import com.example.userservice.utils.validation.annotation.CharSize;
 import com.example.userservice.utils.validation.annotation.EmailPattern;
-import com.example.userservice.utils.validation.annotation.NotEmptyOrBlank;
+import com.example.userservice.utils.validation.annotation.NotEmptyNorBlank;
 
 
 public class UserRegistrationDTO {
 
  //   @JsonProperty("mail")
-    @NotEmptyOrBlank
+    @NotEmptyNorBlank
     @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}")
     private String mail;
  //   @JsonProperty("fio")
 
-    @NotEmptyOrBlank
+    @NotEmptyNorBlank
     private String fio;
 //    @JsonProperty("password")
 
-    @NotEmptyOrBlank
+    @NotEmptyNorBlank
     @CharSize(min = "3", max = "16")
     private String password;
 

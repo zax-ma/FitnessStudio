@@ -4,7 +4,6 @@ import com.example.userservice.utils.exceptions.annotations.CharSizeException;
 import com.example.userservice.utils.validation.annotation.CharSize;
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import jakarta.validation.ValidationException;
-
 import java.lang.reflect.Field;
 
 public class CharSizeValidator implements IFieldValidator {

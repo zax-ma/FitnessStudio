@@ -4,7 +4,6 @@ import com.example.userservice.utils.exceptions.annotations.EmailPatternExceptio
 import com.example.userservice.utils.validation.annotation.EmailPattern;
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import jakarta.validation.ValidationException;
-
 import java.lang.reflect.Field;
 
 public class EmailPatternValidator implements IFieldValidator {

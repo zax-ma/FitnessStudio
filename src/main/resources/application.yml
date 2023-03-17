@@ -18,3 +18,43 @@ spring:
 
   jackson:
     date-format: yyyy-MM-dd HH:mm:ss
+
+  ######### Email properties #########
+  mail:
+    default-encoding: UTF-8
+    host: smtp.mail.ru
+    username: fitness.studio@mail.ru
+    password: XfzLjXqC6NDELuR7fHhs
+    port: 465
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            enable: true
+            ssl: TLSv1.2
+    protocol: smtp
+    test-connection: false
+    debug: true
+  security:
+    user:
+      name: user
+      roles:
+        - ADMIN
+        - USER
+      password: $2y$10$WyfFEKY.wWUJcENF2WaqReUc05yVUCJsXKtps/pfKApT5RXqA8BNa
+
+
+
+
+
+
+
+
+
+
+
+
+
