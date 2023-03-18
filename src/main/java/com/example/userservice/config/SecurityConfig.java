@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
@@ -17,9 +18,24 @@ public class SecurityConfig{
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    protected void configure(HttpSecurity http) throws Exception {
-    http.securityMatcher("/**").authorizeHttpRequests().anyRequest().permitAll();
-
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+            .cors().disable()
+            .csrf().disable()
+            .securityMatcher("/api/**")
+            .authorizeHttpRequests((authz) -> authz
+                    .requestMatchers("/**").permitAll()
+                    .requestMatchers("/api/v1/users").permitAll()
+                    .requestMatchers("/api/v1/users/{uuid}").permitAll()
+                    .requestMatchers("/api/v1/users/{uuid}/dt_update/{dt_update}").permitAll() //hasRole("ADMIN")
+                    //.requestMatcher("/**").hasRole("ADMIN")
+                    .requestMatchers("/api/v1/users/registration").permitAll()
+                    .requestMatchers("/api/v1/users/verification").permitAll()
+                    .requestMatchers("/api/v1/users/login").permitAll()
+                    .requestMatchers("/api/v1/users/me").permitAll()
+                    .anyRequest().permitAll() //anyRequest().authenticated()
+            );
+        return http.build();
     }
 }

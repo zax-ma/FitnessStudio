@@ -1,8 +1,11 @@
-/*
+
 package com.example.userservice.dao.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 @Entity
@@ -15,14 +18,25 @@ public class VerificationTokenEntity {
     @Column(name = "token_id")
     private Long id;
 
-    @Column(name = "token")
+    @Column(name = "token", unique = true)
     private String token;
 
     @OneToOne(targetEntity = UserEntity.class, fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "mail")
     private UserEntity user;
 
-    private Date expiryDate;
+    @Column(updatable = false)
+    @Basic(optional = false)
+    private LocalDateTime expiryAt;
+
+    @CreationTimestamp
+    @Column(updatable = false)
+    private Timestamp timestamp;
+
+    @Transient
+    private boolean isExpired;
+    @Column
+   private Date expiryDate;
 
     private Date calculateExpiryDate(int expiryTimeInMinutes) {
         Calendar cal = Calendar.getInstance();
@@ -31,7 +45,7 @@ public class VerificationTokenEntity {
         return new Date(cal.getTime().getTime());
     }
 
-    public VerificationTokenEntity(Long id, String token, UserEntity user, Date expiryDate) {
+    public VerificationTokenEntity(String token, UserEntity user) {
         this.id = id;
         this.token = token;
         this.user = user;
@@ -62,6 +76,30 @@ public class VerificationTokenEntity {
         this.user = user;
     }
 
+    public LocalDateTime getExpiryAt() {
+        return expiryAt;
+    }
+
+    public void setExpiryAt(LocalDateTime expiryAt) {
+        this.expiryAt = expiryAt;
+    }
+
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
+    }
+
     public Date getExpiryDate() {
         return expiryDate;
     }
@@ -70,4 +108,4 @@ public class VerificationTokenEntity {
         this.expiryDate = expiryDate;
     }
 }
-*/
+

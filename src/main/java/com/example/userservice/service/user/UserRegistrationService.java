@@ -1,7 +1,9 @@
 package com.example.userservice.service.user;
 
 import com.example.userservice.dao.entity.UserEntity;
+import com.example.userservice.dao.entity.VerificationTokenEntity;
 import com.example.userservice.dao.repo.IUserRepository;
+import com.example.userservice.dao.repo.IVerificationTokenRepository;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.service.api.IUserRegistrationService;
@@ -18,16 +20,19 @@ public class UserRegistrationService implements IUserRegistrationService {
     Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
     Converter<UserEntity, UserDTO> toDTOConverter;
     PasswordEncoder passwordEncoder;
+    IVerificationTokenRepository tokenRepository;
 
 
     public UserRegistrationService(IUserRepository repository,
                                    Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
                                    Converter<UserEntity, UserDTO> toDTOConverter,
-                                   PasswordEncoder passwordEncoder) {
+                                   PasswordEncoder passwordEncoder,
+                                   IVerificationTokenRepository tokenRepository) {
         this.repository = repository;
         this.toEntityConverter = toEntityConverter;
         this.toDTOConverter = toDTOConverter;
         this.passwordEncoder = passwordEncoder;
+        this.tokenRepository = tokenRepository;
     }
 
     @Override
@@ -44,6 +49,23 @@ public class UserRegistrationService implements IUserRegistrationService {
 
     @Override
     public void verification(String code, String mail) {
+
+    }
+
+    @Override
+    public void createVerificationToken(String token, UserEntity userEntity) {
+        VerificationTokenEntity myToken = new VerificationTokenEntity(token, userEntity);
+        tokenRepository.save(myToken);
+
+    }
+
+    @Override
+    public VerificationTokenEntity getVerificationTokenEntity(String VerificationTokenEntity) {
+        return null;
+    }
+
+    @Override
+    public void sendRegistrationConfirmationEmail(UserEntity userEntity) {
 
     }
 }

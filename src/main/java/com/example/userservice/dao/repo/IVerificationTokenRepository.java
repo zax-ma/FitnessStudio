@@ -1,14 +1,18 @@
-/*
+
 package com.example.userservice.dao.repo;
 
 import com.example.userservice.dao.entity.VerificationTokenEntity;
 import jakarta.transaction.Transactional;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 @Transactional
-public interface IVerificationTokenRepository extends CrudRepository<VerificationTokenEntity, String> {
+@Repository
+public interface IVerificationTokenRepository extends JpaRepository<VerificationTokenEntity, Long> {
 
-    VerificationTokenEntity findByVerificationToken(String verificationToken);
+  //  VerificationTokenEntity findByMail(String mail);
+    VerificationTokenEntity findByToken(final String token);
+    Long removeByToken(String token);
 
 }
-*/
+
