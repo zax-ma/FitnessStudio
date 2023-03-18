@@ -17,18 +17,21 @@ public class VerificationTokenService implements IVerificationTokenService {
     }
 
     @Override
-    public VerificationTokenEntity create() {
-        return null;
+    public void createToken(VerificationTokenEntity token) {
+        repository.save(token);
     }
 
-/*    @Override
-    public VerificationTokenEntity create() {
-        String tokenValue = UUID.randomUUID().toString();
-        VerificationTokenEntity token = new VerificationTokenEntity();
-        token.setToken(tokenValue);
-        token.setExpiryDate(LocalDateTime.now().plus(getTokenValidityInSeconds()));
-        repository.save(token);
 
-        return token;
+/*    public void createToken(UserEntity newUser) {
+            String token = UUID.randomUUID().toString();
+            VerificationTokenEntity confirmationToken = new VerificationTokenEntity(
+                    token,
+                    LocalDateTime.now(),
+                    LocalDateTime.now().plusMinutes(15),
+                    newUser);
+            createToken(confirmationToken);
     }*/
+
+
 }
+

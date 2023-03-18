@@ -11,11 +11,5 @@ public interface IUserRegistrationService {
 
     void registration(UserEntity userEntity);
 
-    void verification(String code, String mail);
 
-    void createVerificationToken(String token, UserEntity userEntity);
-
-    VerificationTokenEntity getVerificationTokenEntity(String VerificationTokenEntity);
-
-    void sendRegistrationConfirmationEmail(UserEntity userEntity);
 }

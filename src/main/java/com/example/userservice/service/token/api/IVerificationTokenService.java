@@ -4,5 +4,5 @@ import com.example.userservice.dao.entity.VerificationTokenEntity;
 
 public interface IVerificationTokenService {
 
-    VerificationTokenEntity create();
+    void createToken(VerificationTokenEntity token);
 }
