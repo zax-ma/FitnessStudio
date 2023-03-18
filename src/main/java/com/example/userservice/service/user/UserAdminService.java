@@ -5,7 +5,7 @@ import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
-import com.example.userservice.service.api.IUserAdminService;
+import com.example.userservice.service.user.api.IUserAdminService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
 import com.example.userservice.utils.exceptions.errors.EmailAlreadyRegisteredException;
 import org.springframework.core.convert.converter.Converter;
@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 

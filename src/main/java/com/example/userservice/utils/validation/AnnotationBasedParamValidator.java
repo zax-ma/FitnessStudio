@@ -2,8 +2,8 @@ package com.example.userservice.utils.validation;
 
 import com.example.userservice.utils.validation.api.IFieldValidator;
 import com.example.userservice.utils.validation.api.IParamValidator;
-import jakarta.validation.ValidationException;
 
+import javax.validation.ValidationException;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.example.userservice.service.api;
+package com.example.userservice.service.user.api;
 
 import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;

@@ -2,7 +2,8 @@ package com.example.userservice.utils.validation;
 
 import com.example.userservice.utils.exceptions.annotations.RequiredParameterIsEmptyException;
 import com.example.userservice.utils.validation.api.IFieldValidator;
-import jakarta.validation.ValidationException;
+
+import javax.validation.ValidationException;
 import java.lang.reflect.Field;
 import java.util.Collection;
 

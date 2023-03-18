@@ -3,7 +3,7 @@ package com.example.userservice.web.controllers;
 import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
-import com.example.userservice.service.api.IUserAdminService;
+import com.example.userservice.service.user.api.IUserAdminService;
 import com.example.userservice.utils.validation.annotation.ValidParams;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
@@ -29,10 +29,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody UserAdminDTO userCreationAdminDto){
         userAdminService.createUser(userCreationAdminDto);
-        LOGGER.info("hu");
         return ResponseEntity
                 .status(HttpStatus.CREATED).build();
-
     }
 
     @RequestMapping(method = RequestMethod.GET)

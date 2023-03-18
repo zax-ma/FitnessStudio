@@ -2,16 +2,17 @@ package com.example.userservice.dao.entity;
 
 import com.example.userservice.dto.UserRole;
 import com.example.userservice.dto.UserStatus;
-import jakarta.persistence.*;
+
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "app", name = "users")
 public class UserEntity {
-    @Id
     @Column(name = "id")
     private UUID uuid;
+    @Id
     @Column(name = "mail")
     private String mail;
     @Column(name = "fio")
@@ -28,7 +29,6 @@ public class UserEntity {
     private LocalDateTime dt_create;
     @Column(name = "dt_update")
     private LocalDateTime dt_update;
-
     public UserEntity() {
     }
 
@@ -106,4 +106,5 @@ public class UserEntity {
     public void setDt_update(LocalDateTime dt_update) {
         this.dt_update = dt_update;
     }
+
 }
