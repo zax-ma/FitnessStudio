@@ -7,6 +7,7 @@ import com.example.userservice.dto.EUserRole;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
+import com.example.userservice.security.JwtUserDetailsService;
 import com.example.userservice.service.email.api.IEmailVerificationService;
 import com.example.userservice.service.user.UserAuthenticationService;
 import com.example.userservice.service.user.api.IUserAdminService;
@@ -18,6 +19,7 @@ import com.example.userservice.service.user.UserAdminService;
 import com.example.userservice.service.user.UserRegistrationService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -47,11 +49,14 @@ public class ServiceConfig {
 
     public IUserAuthenticationService userAuthenticationService(IUserRepository repository,
                                                                 Converter<UserEntity, UserDTO> toDtoConverter,
-                                                                Converter<UserEntity, EUserRole> roleconverter,
-                                                                BCryptPasswordEncoder encoder){
-        return new UserAuthenticationService(repository, toDtoConverter, roleconverter,encoder);
+                                                                PasswordEncoder encoder){
+        return new UserAuthenticationService(repository, toDtoConverter, encoder);
     }
 
+    public UserDetailsService jwtUserService(IUserAuthenticationService userService,
+                                             Converter<UserEntity, EUserRole> roleconverter) {
+        return new JwtUserDetailsService(userService, roleconverter);
+    }
 
 
 }

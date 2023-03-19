@@ -16,17 +16,14 @@ public class JwtUser implements UserDetails {
     private final String mail;
     private final String fio;
     private final String password;
-    private final EUserRole role;
     private final boolean enabled;
     private final LocalDateTime lastPasswordResetDate;
-
     private final Collection<? extends GrantedAuthority> authorities;
 
     public JwtUser(UUID uuid,
                    String mail,
                    String fio,
                    String password,
-                   EUserRole role,
                    boolean enabled,
                    LocalDateTime lastPasswordResetDate,
                    Collection<? extends GrantedAuthority> authorities) {
@@ -34,7 +31,6 @@ public class JwtUser implements UserDetails {
         this.mail = mail;
         this.fio = fio;
         this.password = password;
-        this.role = role;
         this.enabled = enabled;
         this.lastPasswordResetDate = lastPasswordResetDate;
         this.authorities = authorities;
@@ -48,9 +44,6 @@ public class JwtUser implements UserDetails {
         return fio;
     }
 
-    public EUserRole getRole() {
-        return role;
-    }
 
     @JsonIgnore
     public LocalDateTime getLastPasswordResetDate() {

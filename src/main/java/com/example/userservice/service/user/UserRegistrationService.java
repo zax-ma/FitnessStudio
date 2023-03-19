@@ -20,11 +20,11 @@ import java.time.LocalDateTime;
 @Service
 public class UserRegistrationService implements IUserRegistrationService {
 
-    IUserRepository repository;
-    Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
-    Converter<UserEntity, UserDTO> toDTOConverter;
-    PasswordEncoder passwordEncoder;
-    IVerificationCodeService tokenService;
+    private IUserRepository repository;
+    private Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
+    private Converter<UserEntity, UserDTO> toDTOConverter;
+    private PasswordEncoder passwordEncoder;
+    private IVerificationCodeService tokenService;
 
     public UserRegistrationService(IUserRepository repository,
                                    Converter<UserRegistrationDTO, UserEntity> toEntityConverter,

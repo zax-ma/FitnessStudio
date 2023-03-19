@@ -1,9 +1,11 @@
 package com.example.userservice.security;
 
 import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.service.user.api.IUserAdminService;
+import com.example.userservice.dto.EUserRole;
+import com.example.userservice.security.jwt.JwtUser;
+import com.example.userservice.security.jwt.JwtUserFactory;
 import com.example.userservice.service.user.api.IUserAuthenticationService;
-import com.example.userservice.service.user.api.IUserRegistrationService;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,8 +16,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private IUserAuthenticationService userService;
 
-    public JwtUserDetailsService(IUserAuthenticationService userService) {
+    private Converter<UserEntity, EUserRole> roleconverter;
+
+    public JwtUserDetailsService(IUserAuthenticationService userService,
+                                 Converter<UserEntity, EUserRole> roleconverter) {
         this.userService = userService;
+        this.roleconverter = roleconverter;
     }
 
     @Override
@@ -26,6 +32,8 @@ public class JwtUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User with mail " + username + " not found");
         }
 
-        return null;
+        JwtUser jwtUser = JwtUserFactory.create(user);
+
+        return jwtUser;
     }
 }
