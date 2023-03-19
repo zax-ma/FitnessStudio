@@ -10,23 +10,9 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class})
 public class UserServiceApplication  {
-
-	//implements ApplicationRunner
-
 	@Autowired
-//	private EmailService emailService;
 	public static void main(String[] args) {
 		SpringApplication.run(UserServiceApplication.class, args);
 	}
 
-/*	@Override
-	public void run(ApplicationArguments args) throws Exception {
-		Mail mail = new Mail();
-		mail.setFrom("fitness.studio@mail.ru");
-		mail.setTo("matrikary@gmail.com");
-		mail.setSubject("Sending Simple Email with JavaMailSender Example");
-		mail.setContent("This tutorial demonstrates how to send a simple email using Spring Framework.");
-
-		emailService.sendSimpleMessage(mail);
-	}*/
 }

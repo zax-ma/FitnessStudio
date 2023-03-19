@@ -21,17 +21,17 @@ public class SecurityConfig{
     http
             .cors().disable()
             .csrf().disable()
-            .antMatcher("/api/**")
+            .securityMatcher("/api/**")
             .authorizeHttpRequests((authz) -> authz
-                    .antMatchers("/**").permitAll()
-                    .antMatchers("/api/v1/users").permitAll()
-                    .antMatchers("/api/v1/users/{uuid}").permitAll()
-                    .antMatchers("/api/v1/users/{uuid}/dt_update/{dt_update}").permitAll() //hasRole("ADMIN")
+                    .requestMatchers("/**").permitAll()
+                    .requestMatchers("/api/v1/users").permitAll()
+                    .requestMatchers("/api/v1/users/{uuid}").permitAll()
+                    .requestMatchers("/api/v1/users/{uuid}/dt_update/{dt_update}").permitAll() //hasRole("ADMIN")
                     //.requestMatcher("/**").hasRole("ADMIN")
-                    .antMatchers("/api/v1/users/registration").permitAll()
-                    .antMatchers("/api/v1/users/verification").permitAll()
-                    .antMatchers("/api/v1/users/login").permitAll()
-                    .antMatchers("/api/v1/users/me").permitAll()
+                    .requestMatchers("/api/v1/users/registration").permitAll()
+                    .requestMatchers("/api/v1/users/verification").permitAll()
+                    .requestMatchers("/api/v1/users/login").permitAll()
+                    .requestMatchers("/api/v1/users/me").permitAll()
                     .anyRequest().permitAll() //anyRequest().authenticated()
             );
         return http.build();

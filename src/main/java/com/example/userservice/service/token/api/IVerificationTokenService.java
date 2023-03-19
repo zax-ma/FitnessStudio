@@ -9,5 +9,6 @@ public interface IVerificationTokenService {
 
     void createToken(UserEntity user);
 
-    Optional<VerificationTokenEntity> getToken(String token);
+    VerificationTokenEntity getToken(String token);
+
 }

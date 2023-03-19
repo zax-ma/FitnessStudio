@@ -2,8 +2,8 @@ package com.example.userservice.dao.entity;
 
 import com.example.userservice.dto.UserRole;
 import com.example.userservice.dto.UserStatus;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 

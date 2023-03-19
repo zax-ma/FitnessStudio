@@ -6,7 +6,6 @@ import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.dto.UserStatus;
-import com.example.userservice.service.email.api.IEmailVerificationService;
 import com.example.userservice.service.user.api.IUserRegistrationService;
 import com.example.userservice.service.token.api.IVerificationTokenService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
@@ -15,8 +14,8 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Service
 public class UserRegistrationService implements IUserRegistrationService {
@@ -50,14 +49,19 @@ public class UserRegistrationService implements IUserRegistrationService {
             throw
                     new SingleErrorResponse("User with this email is already registered");
         }
-
     }
 
     @Override
     public void verification(String token, String mail) {
-        if(tokenService.getToken(token).equals(token) && repository.findByMail(mail).equals(mail)){
-            repository.saveStatusByMail(UserStatus.ACTIVATED, mail);
-        }
+        UserEntity user = repository.findByMail(mail);
+        VerificationTokenEntity code = tokenService.getToken(token);
+        Timestamp time = Timestamp.valueOf(LocalDateTime.now());
+        if (token.equals(code.getToken()) && mail.equals(user.getMail())
+                && !time.after(Timestamp.valueOf(code.getExpiryAt()))) {
+            user.setStatus(UserStatus.ACTIVATED);
+            repository.save(user);
+        } else throw new SingleErrorResponse("Token expired!");
     }
-
 }
+
+

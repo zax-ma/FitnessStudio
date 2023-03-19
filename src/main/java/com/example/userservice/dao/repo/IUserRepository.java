@@ -19,10 +19,4 @@ public interface IUserRepository extends JpaRepository<UserEntity, UUID> {
 
     boolean existsByMail(String mail);
 
-
-    @Modifying
-    @Transactional
-    @Query(value = "update app.users c set c.status=:status where c.mail=:mail", nativeQuery=true)
-    void saveStatusByMail(UserStatus status, String mail);
-
 }

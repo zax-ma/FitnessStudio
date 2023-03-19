@@ -37,16 +37,8 @@ public class UserRegistrationController {
     @GetMapping("/verification")
     public ResponseEntity<String> verifyToken(@RequestParam("code") String token,
                                              @RequestParam("mail") String mail) {
-     userRegistrationService.verification(token, mail);
+        userRegistrationService.verification(token, mail);
         return ResponseEntity.ok("Mail was confirmed");
     }
-/*    @GetMapping("/me")
-        public ResponseEntity<UserDTO> myInfo(){
-            return ResponseEntity.ok(this.userAuthenticationService.getMyInfo());
-        }*/
-
-
-
-
 
 }

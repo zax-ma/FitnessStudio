@@ -5,11 +5,9 @@ import com.example.userservice.dao.entity.VerificationTokenEntity;
 import com.example.userservice.dao.repo.IVerificationTokenRepository;
 import com.example.userservice.service.email.api.IEmailVerificationService;
 import com.example.userservice.service.token.api.IVerificationTokenService;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Optional;
 import java.util.UUID;
 @Service
 public class VerificationTokenService implements IVerificationTokenService {
@@ -35,9 +33,10 @@ public class VerificationTokenService implements IVerificationTokenService {
             sender.sendVerificationEmail(newUser.getMail(), token);
     }
 
-    public Optional<VerificationTokenEntity> getToken(String token) {
+    public VerificationTokenEntity getToken(String token) {
         return repository.findByToken(token);
     }
+
 
 /*
     public int setConfirmedAt(String token) {
