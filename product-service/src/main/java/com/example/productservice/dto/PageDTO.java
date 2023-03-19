@@ -1,4 +1,4 @@
-package com.example.userservice.dto;
+package com.example.productservice.dto;
 
 import java.util.List;
 
@@ -13,13 +13,13 @@ public class PageDTO<T> {
     private List<T> content;
 
     public PageDTO(int number,
-                int size,
-                int total_pages,
-                long total_elements,
-                boolean first,
-                int number_of_elements,
-                boolean last,
-                List<T> content) {
+                   int size,
+                   int total_pages,
+                   long total_elements,
+                   boolean first,
+                   int number_of_elements,
+                   boolean last,
+                   List<T> content) {
         this.number = number;
         this.size = size;
         this.total_pages = total_pages;
@@ -92,18 +92,5 @@ public class PageDTO<T> {
 
     public void setContent(List <T> content) {
         this.content = content;
-    }
-    @Override
-    public String toString() {
-        return "PageDTO{" +
-                "number=" + number +
-                ", size=" + size +
-                ", total_pages=" + total_pages +
-                ", total_elements=" + total_elements +
-                ", first=" + first +
-                ", number_of_elements=" + number_of_elements +
-                ", last=" + last +
-                ", content=" + content +
-                '}';
     }
 }
