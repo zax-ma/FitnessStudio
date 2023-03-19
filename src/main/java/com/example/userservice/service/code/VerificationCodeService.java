@@ -38,13 +38,6 @@ public class VerificationCodeService implements IVerificationCodeService {
     }
 
 
-/*
-    public int setConfirmedAt(String token) {
-        return repository.updateConfirmedAt(
-                token, LocalDateTime.now());
-    }
-*/
-
 
 }
 

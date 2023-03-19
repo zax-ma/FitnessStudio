@@ -20,7 +20,6 @@ public class UserLoginController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginDTO loginDto){
-        service.login(loginDto);
-        return ResponseEntity.ok("Login success!");
+        return ResponseEntity.ok("Token: " + service.login(loginDto));
     }
 }

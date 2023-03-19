@@ -37,10 +37,12 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public void login(LoginDTO loginDTO) {
+    public String login(LoginDTO loginDTO) {
         UserEntity user = repository.findByMail(loginDTO.getMail());
         if(user != null){
             if(encoder.matches(loginDTO.getPassword(), user.getPassword())){
+
+                return null;
                 //jwt generation
             } throw new ValidationException("Wrong password");
         }throw new ValidationException("Wrong e-mail");

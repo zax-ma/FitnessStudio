@@ -41,8 +41,9 @@ spring:
 
   security:
     jwt:
-      secret: "fitness"
-      expiration: 6085000
+      token:
+        secret: "fitness"
+        expiration: 6085000
 
 
 

@@ -6,7 +6,7 @@ import com.example.userservice.dto.UserDTO;
 
 public interface IUserAuthenticationService {
 
-    UserDTO getMyInfo(); //передача токена для получения информации из дао
-    void login(LoginDTO loginDto);
+    UserDTO getMyInfo();
+    String login(LoginDTO loginDto);
     UserEntity findByMail(String mail);
 }
