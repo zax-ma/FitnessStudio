@@ -35,9 +35,9 @@ public class UserRegistrationController {
     }
 
     @GetMapping("/verification")
-    public ResponseEntity<String> verifyToken(@RequestParam("code") String token,
+    public ResponseEntity<String> verifyToken(@RequestParam("code") String code,
                                              @RequestParam("mail") String mail) {
-        userRegistrationService.verification(token, mail);
+        userRegistrationService.verification(code, mail);
         return ResponseEntity.ok("Mail was confirmed");
     }
 

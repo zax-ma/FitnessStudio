@@ -1,7 +1,7 @@
 package com.example.userservice.service.email;
 
 import com.example.userservice.dao.repo.IUserRepository;
-import com.example.userservice.dao.repo.IVerificationTokenRepository;
+import com.example.userservice.dao.repo.IVerificationCodeRepository;
 import com.example.userservice.service.email.api.IEmailVerificationService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
@@ -18,9 +18,9 @@ public class EmailVerificationService implements IEmailVerificationService {
     private Logger LOGGER = LoggerFactory.getLogger(EmailVerificationService.class);
     private JavaMailSender javaMailSender;
     private IUserRepository userRepository;
-    private IVerificationTokenRepository tokenRepository;
+    private IVerificationCodeRepository tokenRepository;
 
-    public EmailVerificationService(JavaMailSender javaMailSender, IUserRepository userRepository, IVerificationTokenRepository tokenRepository) {
+    public EmailVerificationService(JavaMailSender javaMailSender, IUserRepository userRepository, IVerificationCodeRepository tokenRepository) {
         this.javaMailSender = javaMailSender;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;

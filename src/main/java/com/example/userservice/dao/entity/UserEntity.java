@@ -32,7 +32,14 @@ public class UserEntity {
     public UserEntity() {
     }
 
-    public UserEntity(UUID uuid, String mail, String fio, String password, UserRole role, UserStatus status, LocalDateTime dt_create, LocalDateTime dt_update) {
+    public UserEntity(UUID uuid,
+                      String mail,
+                      String fio,
+                      String password,
+                      UserRole role,
+                      UserStatus status,
+                      LocalDateTime dt_create,
+                      LocalDateTime dt_update) {
         this.uuid = uuid;
         this.mail = mail;
         this.fio = fio;

@@ -38,13 +38,11 @@ spring:
     protocol: smtp
     test-connection: false
     debug: true
+
   security:
-    user:
-      name: user
-      roles:
-        - ADMIN
-        - USER
-      password: $2y$10$WyfFEKY.wWUJcENF2WaqReUc05yVUCJsXKtps/pfKApT5RXqA8BNa
+    jwt:
+      secret: "fitness"
+      expiration: 6085000
 
 
 

@@ -11,6 +11,7 @@ import com.example.userservice.utils.exceptions.errors.EmailAlreadyRegisteredExc
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -25,18 +26,11 @@ public class UserAdminService implements IUserAdminService {
     private IUserRepository userRepository;
     private Converter<UserAdminDTO, UserEntity> toEntityConverter;
     private Converter<UserEntity, UserDTO> toDtoConverter;
- //   private PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
-    public UserAdminService(IUserRepository userRepository,
-                            Converter<UserAdminDTO, UserEntity> toEntityConverter,
-                            Converter<UserEntity, UserDTO> toDtoConverter) {
-        this.userRepository = userRepository;
-        this.toEntityConverter = toEntityConverter;
-        this.toDtoConverter = toDtoConverter;
 
-    }
 
-/*    public UserAdminService(IUserRepository userRepository,
+   public UserAdminService(IUserRepository userRepository,
                             Converter<UserAdminDTO, UserEntity> toEntityConverter,
                             Converter<UserEntity, UserDTO> toDtoConverter,
                             PasswordEncoder passwordEncoder) {
@@ -44,14 +38,14 @@ public class UserAdminService implements IUserAdminService {
         this.toEntityConverter = toEntityConverter;
         this.toDtoConverter = toDtoConverter;
         this.passwordEncoder = passwordEncoder;
-    }*/
+    }
 
     @Override
     public void createUser(UserAdminDTO userAdminDto) {
         if (!userRepository.existsByMail(userAdminDto.getMail())) {
             UserEntity newUser = this.toEntityConverter.convert(userAdminDto);
             assert newUser != null;
-            newUser.setPassword(userAdminDto.getPassword()); //newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
+            newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
             this.userRepository.save(newUser);
         } else {
             throw
@@ -99,18 +93,22 @@ public class UserAdminService implements IUserAdminService {
 
         } else {
             if (Timestamp.valueOf(userUpdate.getDt_update()).equals(lst_update)) {
-                userUpdate.setMail(user.getMail());
-                userUpdate.setDt_update(LocalDateTime.now());
-                userUpdate.setRole(user.getRole());
-                userUpdate.setStatus(user.getStatus());
-                userUpdate.setFio(user.getFio());
-                userUpdate.setPassword(user.getPassword());
-                userRepository.save(userUpdate);
+                updatingUser(user, userUpdate);
             }
             else {
                 throw new EmailAlreadyRegisteredException();
             }
         }
+    }
+
+    private void updatingUser(UserAdminDTO user, UserEntity userUpdate) {
+        userUpdate.setMail(user.getMail());
+        userUpdate.setDt_update(LocalDateTime.now());
+        userUpdate.setRole(user.getRole());
+        userUpdate.setStatus(user.getStatus());
+        userUpdate.setFio(user.getFio());
+        userUpdate.setPassword(user.getPassword());
+        userRepository.save(userUpdate);
     }
 
 

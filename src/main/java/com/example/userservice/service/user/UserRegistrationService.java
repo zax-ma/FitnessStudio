@@ -1,13 +1,13 @@
 package com.example.userservice.service.user;
 
 import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.dao.entity.VerificationTokenEntity;
+import com.example.userservice.dao.entity.VerificationCodeEntity;
 import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.dto.UserStatus;
 import com.example.userservice.service.user.api.IUserRegistrationService;
-import com.example.userservice.service.token.api.IVerificationTokenService;
+import com.example.userservice.service.code.api.IVerificationCodeService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
 import org.springframework.core.convert.converter.Converter;
 
@@ -24,13 +24,13 @@ public class UserRegistrationService implements IUserRegistrationService {
     Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
     Converter<UserEntity, UserDTO> toDTOConverter;
     PasswordEncoder passwordEncoder;
-    IVerificationTokenService tokenService;
+    IVerificationCodeService tokenService;
 
     public UserRegistrationService(IUserRepository repository,
                                    Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
                                    Converter<UserEntity, UserDTO> toDTOConverter,
                                    PasswordEncoder passwordEncoder,
-                                   IVerificationTokenService tokenService) {
+                                   IVerificationCodeService tokenService) {
         this.repository = repository;
         this.toEntityConverter = toEntityConverter;
         this.toDTOConverter = toDTOConverter;
@@ -44,7 +44,7 @@ public class UserRegistrationService implements IUserRegistrationService {
             String encodedPassword = passwordEncoder.encode(newUser.getPassword());
             newUser.setPassword(encodedPassword);
             this.repository.save(newUser);
-            tokenService.createToken(newUser);
+            tokenService.createCode(newUser);
         } else {
             throw
                     new SingleErrorResponse("User with this email is already registered");
@@ -52,15 +52,15 @@ public class UserRegistrationService implements IUserRegistrationService {
     }
 
     @Override
-    public void verification(String token, String mail) {
+    public void verification(String code, String mail) {
         UserEntity user = repository.findByMail(mail);
-        VerificationTokenEntity code = tokenService.getToken(token);
+        VerificationCodeEntity verificationCode = tokenService.getCode(code);
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
-        if (token.equals(code.getToken()) && mail.equals(user.getMail())
-                && !time.after(Timestamp.valueOf(code.getExpiryAt()))) {
+        if (code.equals(verificationCode.getCode()) && mail.equals(user.getMail())
+                && !time.after(Timestamp.valueOf(verificationCode.getExpiryAt()))) {
             user.setStatus(UserStatus.ACTIVATED);
             repository.save(user);
-        } else throw new SingleErrorResponse("Token expired!");
+        } else throw new SingleErrorResponse("Code expired!");
     }
 }
 

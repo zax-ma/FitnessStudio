@@ -1,30 +1,30 @@
-package com.example.userservice.service.token;
+package com.example.userservice.service.code;
 
 import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.dao.entity.VerificationTokenEntity;
-import com.example.userservice.dao.repo.IVerificationTokenRepository;
+import com.example.userservice.dao.entity.VerificationCodeEntity;
+import com.example.userservice.dao.repo.IVerificationCodeRepository;
 import com.example.userservice.service.email.api.IEmailVerificationService;
-import com.example.userservice.service.token.api.IVerificationTokenService;
+import com.example.userservice.service.code.api.IVerificationCodeService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 @Service
-public class VerificationTokenService implements IVerificationTokenService {
+public class VerificationCodeService implements IVerificationCodeService {
 
-    IVerificationTokenRepository repository;
+    IVerificationCodeRepository repository;
 
     IEmailVerificationService sender;
 
-    public VerificationTokenService(IVerificationTokenRepository repository, IEmailVerificationService sender) {
+    public VerificationCodeService(IVerificationCodeRepository repository, IEmailVerificationService sender) {
         this.repository = repository;
         this.sender = sender;
     }
 
     @Override
-    public void createToken(UserEntity newUser) {
+    public void createCode(UserEntity newUser) {
             String token = UUID.randomUUID().toString();
-            VerificationTokenEntity confirmationToken = new VerificationTokenEntity(
+            VerificationCodeEntity confirmationToken = new VerificationCodeEntity(
                     token,
                     LocalDateTime.now(),
                     LocalDateTime.now().plusMinutes(15),
@@ -33,8 +33,8 @@ public class VerificationTokenService implements IVerificationTokenService {
             sender.sendVerificationEmail(newUser.getMail(), token);
     }
 
-    public VerificationTokenEntity getToken(String token) {
-        return repository.findByToken(token);
+    public VerificationCodeEntity getCode(String code) {
+        return repository.findByCode(code);
     }
 
 

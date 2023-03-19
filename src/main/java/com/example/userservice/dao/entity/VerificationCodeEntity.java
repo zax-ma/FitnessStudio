@@ -4,38 +4,36 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(schema = "app", name = "tokens")
-public class VerificationTokenEntity {
+@Table(schema = "app", name = "codes")
+public class VerificationCodeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "token", unique = true, nullable = false)
-    private String token;
+    @Column(name = "code", unique = true, nullable = false)
+    private String code;
 
     @Column(nullable = false)
     private LocalDateTime createdAt;
     @Column(nullable = false)
     private LocalDateTime expiryAt;
-    @Column
-    private LocalDateTime confirmedAt;
 
     @ManyToOne
     @JoinColumn(nullable = false, name = "mail")
     private UserEntity user;
 
-    public VerificationTokenEntity() {
+    public VerificationCodeEntity() {
     }
 
-    public VerificationTokenEntity(
-            String token,
+    public VerificationCodeEntity(
+            String code,
             LocalDateTime createdAt,
             LocalDateTime expiryAt,
             UserEntity user
             ) {
-        this.token = token;
+        this.code = code;
         this.createdAt = createdAt;
         this.expiryAt = expiryAt;
         this.user = user;
@@ -50,12 +48,12 @@ public class VerificationTokenEntity {
         this.id = id;
     }
 
-    public String getToken() {
-        return token;
+    public String getCode() {
+        return code;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -73,15 +71,6 @@ public class VerificationTokenEntity {
     public void setExpiryAt(LocalDateTime expiryAt) {
         this.expiryAt = expiryAt;
     }
-
-    public LocalDateTime getConfirmedAt() {
-        return confirmedAt;
-    }
-
-    public void setConfirmedAt(LocalDateTime confirmedAt) {
-        this.confirmedAt = confirmedAt;
-    }
-
 
     public UserEntity getUser() {
         return user;
