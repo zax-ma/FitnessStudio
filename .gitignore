@@ -1,5 +1,7 @@
 HELP.md
 target/
+git_key
+git_key.pub
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
