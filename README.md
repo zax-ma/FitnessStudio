@@ -1,2 +1,2 @@
-# FitsessStudio
+# FitnessStudio
 FitnessStudio final project 
