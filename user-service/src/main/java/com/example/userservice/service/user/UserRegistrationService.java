@@ -21,19 +21,13 @@ import java.time.LocalDateTime;
 public class UserRegistrationService implements IUserRegistrationService {
 
     private IUserRepository repository;
-    private Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
-    private Converter<UserEntity, UserDTO> toDTOConverter;
     private PasswordEncoder passwordEncoder;
     private IVerificationCodeService tokenService;
 
     public UserRegistrationService(IUserRepository repository,
-                                   Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
-                                   Converter<UserEntity, UserDTO> toDTOConverter,
                                    PasswordEncoder passwordEncoder,
                                    IVerificationCodeService tokenService) {
         this.repository = repository;
-        this.toEntityConverter = toEntityConverter;
-        this.toDTOConverter = toDTOConverter;
         this.passwordEncoder = passwordEncoder;
         this.tokenService = tokenService;
     }

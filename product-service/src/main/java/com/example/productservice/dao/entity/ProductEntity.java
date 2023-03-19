@@ -14,7 +14,7 @@ import java.util.UUID;
 public class ProductEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "uuid")
     UUID uuid;
 
     @Column(name = "dt_create")

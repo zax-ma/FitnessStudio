@@ -40,11 +40,9 @@ public class ServiceConfig {
     }
 
     public IUserRegistrationService userRegistrationService(IUserRepository repository,
-                                                            Converter<UserRegistrationDTO, UserEntity> toEntityConverter,
-                                                            Converter<UserEntity, UserDTO> toDTOConverter,
                                                             PasswordEncoder passwordEncoder,
                                                             IVerificationCodeService tokenService){
-        return new UserRegistrationService(repository, toEntityConverter, toDTOConverter, passwordEncoder, tokenService);
+        return new UserRegistrationService(repository, passwordEncoder, tokenService);
     }
 
     public IUserAuthenticationService userAuthenticationService(IUserRepository repository,

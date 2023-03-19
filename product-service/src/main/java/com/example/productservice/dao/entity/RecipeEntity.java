@@ -12,7 +12,7 @@ import java.util.UUID;
 @Table(schema = "app", name = "recipe")
 public class RecipeEntity {
     @Id
-    @Column(name = "id")
+    @Column(name = "uuid")
     private UUID uuid;
 
     @Column(name = "dt_create")

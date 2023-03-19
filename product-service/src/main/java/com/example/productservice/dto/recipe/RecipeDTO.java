@@ -1,4 +1,4 @@
-package com.example.productservice.dto.recope;
+package com.example.productservice.dto.recipe;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
