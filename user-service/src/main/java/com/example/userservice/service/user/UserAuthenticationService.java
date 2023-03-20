@@ -4,16 +4,14 @@ import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.LoginDTO;
 import com.example.userservice.dto.UserDTO;
+import com.example.userservice.security.AuthenticationResponse;
+import com.example.userservice.security.JwtService;
 import com.example.userservice.security.UserHolder;
-import com.example.userservice.security.jwt.JwtTokenProvider;
 import com.example.userservice.service.user.api.IUserAuthenticationService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
-import jakarta.validation.ValidationException;
-import org.apache.catalina.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,22 +19,20 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     private IUserRepository repository;
     private Converter<UserEntity, UserDTO> toDtoConverter;
-    private PasswordEncoder encoder;
-
     private AuthenticationManager authenticationManager;
-    private JwtTokenProvider jwtTokenProvider;
-
+    private JwtService jwtService;
     private UserHolder userHolder;
+
 
     public UserAuthenticationService(IUserRepository repository,
                                      Converter<UserEntity, UserDTO> toDtoConverter,
-                                     PasswordEncoder encoder,
-                                     JwtTokenProvider jwtTokenProvider,
+                                     AuthenticationManager authenticationManager,
+                                     JwtService jwtService,
                                      UserHolder userHolder) {
         this.repository = repository;
         this.toDtoConverter = toDtoConverter;
-        this.encoder = encoder;
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
         this.userHolder = userHolder;
     }
 
@@ -48,15 +44,15 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     }
 
     @Override
-    public String login(LoginDTO loginDTO) {
-        UserEntity user = repository.findByMail(loginDTO.getMail());
-        if(user != null){
-            if(encoder.matches(loginDTO.getPassword(), user.getPassword())){
+    public AuthenticationResponse login(LoginDTO loginDTO) {
 
-              return  jwtTokenProvider.createToken(user);
-                //jwt generation
-            } throw new ValidationException("Wrong password");
-        }throw new ValidationException("Wrong e-mail");
+                authenticationManager.authenticate(
+                        new UsernamePasswordAuthenticationToken(
+                                loginDTO.getMail(),
+                                loginDTO.getPassword()));
+
+        return new AuthenticationResponse(jwtService.generateToken(
+                this.repository.findByMail(loginDTO.getMail())));
     }
 
     @Override

@@ -1,8 +1,8 @@
 package com.example.userservice.web.controllers;
 
+import com.example.userservice.security.AuthenticationResponse;
 import com.example.userservice.dto.LoginDTO;
 import com.example.userservice.service.user.api.IUserAuthenticationService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +19,7 @@ public class UserLoginController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody LoginDTO loginDto){
-        return ResponseEntity.ok("Token: " + service.login(loginDto));
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginDTO loginDto){
+        return ResponseEntity.ok(service.login(loginDto));
     }
 }

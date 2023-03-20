@@ -1,5 +1,6 @@
 package com.example.userservice.web.controllers;
 
+import com.example.userservice.security.AuthenticationResponse;
 import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.service.user.api.IUserRegistrationService;
@@ -25,7 +26,7 @@ public class UserRegistrationController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<?> create(@RequestBody UserRegistrationDTO newUserDTO){
+    public ResponseEntity<AuthenticationResponse> create(@RequestBody UserRegistrationDTO newUserDTO){
         UserEntity newUser = this.toEntityConverter.convert(newUserDTO);
         userRegistrationService.registration(newUser);
         return ResponseEntity

@@ -3,14 +3,12 @@ package com.example.userservice.service.user;
 import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dao.entity.VerificationCodeEntity;
 import com.example.userservice.dao.repo.IUserRepository;
-import com.example.userservice.dto.UserDTO;
-import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.dto.UserStatus;
-import com.example.userservice.service.user.api.IUserRegistrationService;
+import com.example.userservice.security.AuthenticationResponse;
+import com.example.userservice.security.JwtService;
 import com.example.userservice.service.code.api.IVerificationCodeService;
+import com.example.userservice.service.user.api.IUserRegistrationService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
-import org.springframework.core.convert.converter.Converter;
-
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -20,40 +18,48 @@ import java.time.LocalDateTime;
 @Service
 public class UserRegistrationService implements IUserRegistrationService {
 
-    private IUserRepository repository;
-    private PasswordEncoder passwordEncoder;
-    private IVerificationCodeService tokenService;
+    private final IUserRepository repository;
+    private final PasswordEncoder passwordEncoder;
+    private final IVerificationCodeService codeService;
+    private final JwtService jwtService;
+
 
     public UserRegistrationService(IUserRepository repository,
                                    PasswordEncoder passwordEncoder,
-                                   IVerificationCodeService tokenService) {
+                                   IVerificationCodeService codeService,
+                                   JwtService jwtService) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
-        this.tokenService = tokenService;
+        this.codeService = codeService;
+        this.jwtService = jwtService;
     }
 
     @Override
-    public void registration(UserEntity newUser) {
+    public AuthenticationResponse registration(UserEntity newUser) {
         if (!repository.existsByMail(newUser.getMail())) {
-            String encodedPassword = passwordEncoder.encode(newUser.getPassword());
+            String encodedPassword = this.passwordEncoder.encode(newUser.getPassword());
+
             newUser.setPassword(encodedPassword);
             this.repository.save(newUser);
-            tokenService.createCode(newUser);
+            codeService.createCode(newUser);
         } else {
             throw
                     new SingleErrorResponse("User with this email is already registered");
         }
+
+        return new AuthenticationResponse(jwtService.generateToken(newUser));
+
     }
 
     @Override
     public void verification(String code, String mail) {
-        UserEntity user = repository.findByMail(mail);
-        VerificationCodeEntity verificationCode = tokenService.getCode(code);
+        UserEntity user = this.repository.findByMail(mail);
+        VerificationCodeEntity verificationCode = this.codeService.getCode(code);
         Timestamp time = Timestamp.valueOf(LocalDateTime.now());
         if (code.equals(verificationCode.getCode()) && mail.equals(user.getMail())
                 && !time.after(Timestamp.valueOf(verificationCode.getExpiryAt()))) {
             user.setStatus(UserStatus.ACTIVATED);
-            repository.save(user);
+            this.repository.save(user);
         } else throw new SingleErrorResponse("Code expired!");
     }
 }

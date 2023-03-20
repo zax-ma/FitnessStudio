@@ -27,7 +27,7 @@ public class VerificationCodeService implements IVerificationCodeService {
             VerificationCodeEntity confirmationToken = new VerificationCodeEntity(
                     token,
                     LocalDateTime.now(),
-                    LocalDateTime.now().plusMinutes(15),
+                    LocalDateTime.now().plusMinutes(60),
                     newUser);
             repository.save(confirmationToken);
             sender.sendVerificationEmail(newUser.getMail(), token);

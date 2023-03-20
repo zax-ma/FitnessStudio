@@ -3,13 +3,18 @@ package com.example.userservice.dao.entity;
 import com.example.userservice.dto.UserRole;
 import com.example.userservice.dto.UserStatus;
 import jakarta.persistence.*;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Table(schema = "app", name = "users")
-public class UserEntity {
+public class UserEntity implements UserDetails {
     @Column(name = "id")
     private UUID uuid;
     @Id
@@ -90,8 +95,38 @@ public class UserEntity {
         this.status = status;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return mail;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return (getStatus().equals(UserStatus.ACTIVATED));
     }
 
     public void setPassword(String password) {
