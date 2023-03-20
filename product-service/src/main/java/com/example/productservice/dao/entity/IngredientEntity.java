@@ -2,7 +2,6 @@ package com.example.productservice.dao.entity;
 
 import jakarta.persistence.*;
 
-import java.util.UUID;
 
 
 @Embeddable

@@ -14,32 +14,35 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+@Service
 public class RecipeService implements IRecipeService {
 
     Converter<RecipeEntity, RecipeDTO> toDtoConverter;
     IRecipeRepository repository;
-
     IProductService productService;
 
-    public RecipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter, IRecipeRepository repository, IProductService productService) {
+    public RecipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
+                         IRecipeRepository repository,
+                         IProductService productService) {
         this.toDtoConverter = toDtoConverter;
         this.repository = repository;
         this.productService = productService;
     }
 
     @Override
-    public void create(RecipeEntity recipe) {
-        if(repository.existByTitle(recipe.getTitle())){
+    public void create(NewRecipeDTO recipe) {
+        if(recipe.getTitle().equals(repository.findByTitle(recipe.getTitle())) ){
             throw new RuntimeException("Recipe is already created");
         }
-            repository.save(recipe);
+        RecipeEntity recipeEntity = convertToEntity(recipe);
+            repository.save(recipeEntity);
     }
 
     @Override
@@ -68,9 +71,9 @@ public class RecipeService implements IRecipeService {
                 .orElseThrow(() -> new EntityNotFoundException("uuid"));
 
         if (Timestamp.valueOf(recipeUpdate.getDt_update()).equals(dtUpdate)){
+            List<IngredientEntity> ingredient = convertToProduct(recipe.getComposition());
             recipeUpdate.setTitle(recipe.getTitle());
-            recipeUpdate.setComposition(productIngredients);
-            List<IngredientEntity> ingredient = convertToProductIngredients(recipe.getComposition());
+            recipeUpdate.setComposition(ingredient);
             repository.save(recipeUpdate);
         }
     }
@@ -89,5 +92,17 @@ public class RecipeService implements IRecipeService {
                     return ingredient;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private RecipeEntity convertToEntity(NewRecipeDTO recipeCreateDTO) {
+
+        RecipeEntity recipe = new RecipeEntity();
+        recipe.setTitle(recipeCreateDTO.getTitle());
+
+        List<IngredientDTO> ingredionts = recipeCreateDTO.getComposition();
+        List<IngredientEntity> productList = convertToProduct(ingredionts);
+        recipe.setComposition(productList);
+
+        return recipe;
     }
 }

@@ -11,6 +11,9 @@ public class CompositionDTO {
     private double fats;
     private double carbohydrates;
 
+    public CompositionDTO() {
+    }
+
     public CompositionDTO(ProductDTO product, int weight, int calories, double proteins, double fats, double carbohydrates) {
         this.product = product;
         this.weight = weight;

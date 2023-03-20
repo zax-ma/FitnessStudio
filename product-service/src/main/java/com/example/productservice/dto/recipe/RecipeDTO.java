@@ -38,6 +38,9 @@ public class RecipeDTO {
     @JsonProperty("carbohydrates")
     private double carbohydrates;
 
+    public RecipeDTO() {
+    }
+
     public RecipeDTO(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update, String title, List<CompositionDTO> composition, int weight, int calories, double proteins, double fats, double carbohydrates) {
         this.uuid = uuid;
         this.dt_create = dt_create;

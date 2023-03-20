@@ -10,27 +10,29 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+@Service
 public class ProductService implements IProductService {
 
     private IProductRepository repository;
 
     private Converter<ProductEntity, ProductDTO> toDtoConverter;
 
-    public ProductService(IProductRepository repository, Converter<ProductEntity, ProductDTO> toDtoConverter) {
+    public ProductService(IProductRepository repository,
+                          Converter<ProductEntity, ProductDTO> toDtoConverter) {
         this.repository = repository;
         this.toDtoConverter = toDtoConverter;
     }
 
     @Override
     public void create(ProductEntity product) {
-        if(repository.existByTitle(product.getTitle())){
+        if(product.getTitle().equals(repository.findByTitle(product.getTitle())) ){
             throw new RuntimeException("Product is already added");
         }
         repository.save(product);

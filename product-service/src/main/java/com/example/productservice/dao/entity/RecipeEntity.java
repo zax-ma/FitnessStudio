@@ -1,9 +1,6 @@
 package com.example.productservice.dao.entity;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
-
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -16,10 +13,10 @@ public class RecipeEntity {
     private UUID uuid;
 
     @Column(name = "dt_create")
-    private LocalDateTime dtCreate;
+    private LocalDateTime dt_create;
 
     @Column(name = "dt_update")
-    private LocalDateTime dtUpdate;
+    private LocalDateTime dt_update;
 
     @Column(name = "title")
     private String title;
@@ -32,14 +29,17 @@ public class RecipeEntity {
     )
     private List<IngredientEntity> composition;
 
+    public RecipeEntity() {
+    }
+
     public RecipeEntity(UUID uuid,
                         LocalDateTime dt_create,
                         LocalDateTime dt_update,
                         String title,
                         List<IngredientEntity> composition) {
         this.uuid = uuid;
-        this.dtCreate = dt_create;
-        this.dtUpdate = dt_update;
+        this.dt_create = dt_create;
+        this.dt_update = dt_update;
         this.title = title;
         this.composition = composition;
     }
@@ -52,20 +52,20 @@ public class RecipeEntity {
         this.uuid = uuid;
     }
 
-    public LocalDateTime getDtCreate() {
-        return dtCreate;
+    public LocalDateTime getDt_create() {
+        return dt_create;
     }
 
-    public void setDtCreate(LocalDateTime dtCreate) {
-        this.dtCreate = dtCreate;
+    public void setDt_create(LocalDateTime dtCreate) {
+        this.dt_create = dtCreate;
     }
 
     public LocalDateTime getDt_update() {
-        return dtUpdate;
+        return dt_update;
     }
 
     public void setDt_update(LocalDateTime dtUpdate) {
-        this.dtUpdate = dtUpdate;
+        this.dt_update = dtUpdate;
     }
 
     public String getTitle() {

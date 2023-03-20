@@ -4,7 +4,9 @@ import com.example.productservice.dao.entity.ProductEntity;
 import com.example.productservice.dto.product.NewProductDTO;
 import com.example.productservice.dto.AuxFieldsDTO;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class NewProductDtoToEntityConverter implements Converter<NewProductDTO, ProductEntity> {
 
     @Override
