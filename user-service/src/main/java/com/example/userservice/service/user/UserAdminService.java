@@ -25,28 +25,24 @@ import java.util.UUID;
 public class UserAdminService implements IUserAdminService {
 
     private IUserRepository userRepository;
-    private Converter<UserAdminDTO, UserEntity> toEntityConverter;
     private Converter<UserEntity, UserDTO> toDtoConverter;
     private PasswordEncoder passwordEncoder;
 
 
 
    public UserAdminService(IUserRepository userRepository,
-                            Converter<UserAdminDTO, UserEntity> toEntityConverter,
                             Converter<UserEntity, UserDTO> toDtoConverter,
                             PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.toEntityConverter = toEntityConverter;
         this.toDtoConverter = toDtoConverter;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void createUser(UserAdminDTO userAdminDto) {
-        if (!userRepository.existsByMail(userAdminDto.getMail())) {
-            UserEntity newUser = this.toEntityConverter.convert(userAdminDto);
+    public void createUser(UserEntity newUser) {
+        if (!userRepository.existsByMail(newUser.getMail())) {
             assert newUser != null;
-            newUser.setPassword(passwordEncoder.encode(userAdminDto.getPassword()));
+            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
             this.userRepository.save(newUser);
         } else {
             throw

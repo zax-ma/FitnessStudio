@@ -12,20 +12,4 @@ public class Validations {
         this.userAdminService = userAdminService;
     }
 
-    @Test
-    @ValidParams
-    public void testConvertorUser() throws Exception {
-
-        UserAdminDTO user = new UserAdminDTO().new AdminBuilder()
-                .setFio("admin")
-                .setMail("admin@admin.com")
-                .setPassword("a")
-                .setRole(UserRole.ADMIN)
-                .setStatus(UserStatus.ACTIVATED)
-                .build();
-
-            userAdminService.createUser(user);
-
-
-    }
 }

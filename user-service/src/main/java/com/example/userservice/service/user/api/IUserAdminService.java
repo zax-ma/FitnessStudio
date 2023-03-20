@@ -1,5 +1,6 @@
 package com.example.userservice.service.user.api;
 
+import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 public interface IUserAdminService {
 
-    void createUser(UserAdminDTO userCreationAdminDto);
+    void createUser(UserEntity newUser);
     PageDTO<UserDTO> getUserPage(Pageable pageable);
 
     UserDTO getUserInfo(UUID uuid);

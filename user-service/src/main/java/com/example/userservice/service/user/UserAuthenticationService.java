@@ -4,10 +4,12 @@ import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dao.repo.IUserRepository;
 import com.example.userservice.dto.LoginDTO;
 import com.example.userservice.dto.UserDTO;
+import com.example.userservice.security.UserHolder;
 import com.example.userservice.security.jwt.JwtTokenProvider;
 import com.example.userservice.service.user.api.IUserAuthenticationService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
 import jakarta.validation.ValidationException;
+import org.apache.catalina.User;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,22 +26,25 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     private AuthenticationManager authenticationManager;
     private JwtTokenProvider jwtTokenProvider;
 
+    private UserHolder userHolder;
 
     public UserAuthenticationService(IUserRepository repository,
                                      Converter<UserEntity, UserDTO> toDtoConverter,
-                                     PasswordEncoder encoder) {
+                                     PasswordEncoder encoder,
+                                     JwtTokenProvider jwtTokenProvider,
+                                     UserHolder userHolder) {
         this.repository = repository;
         this.toDtoConverter = toDtoConverter;
         this.encoder = encoder;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.userHolder = userHolder;
     }
 
     @Override
     public UserDTO getMyInfo() {
 
-/*        UserEntity userInfo = this.repository.findById(uuid)
-                .orElseThrow(() -> new SingleErrorResponse("User with uuid " + uuid + " was not found"));
-        return this.toDtoConverter.convert(userInfo);*/
-        return null;
+       UserEntity userInfo = (UserEntity) this.userHolder.getAuthentication().getPrincipal();
+        return this.toDtoConverter.convert(userInfo);
     }
 
     @Override

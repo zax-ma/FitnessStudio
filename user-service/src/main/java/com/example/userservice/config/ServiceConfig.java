@@ -8,6 +8,8 @@ import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.security.JwtUserDetailsService;
+import com.example.userservice.security.UserHolder;
+import com.example.userservice.security.jwt.JwtTokenProvider;
 import com.example.userservice.service.email.api.IEmailVerificationService;
 import com.example.userservice.service.user.UserAuthenticationService;
 import com.example.userservice.service.user.api.IUserAdminService;
@@ -27,12 +29,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class ServiceConfig {
     public IUserAdminService userAdminService(IUserRepository repository,
-                                              Converter<UserAdminDTO, UserEntity> toEntityConverter,
                                               Converter<UserEntity, UserDTO> toDTOConverter,
                                               PasswordEncoder passwordEncoder
                                               ){
 
-        return new UserAdminService(repository, toEntityConverter, toDTOConverter, passwordEncoder);
+        return new UserAdminService(repository, toDTOConverter, passwordEncoder);
     }
 
     public IVerificationCodeService verificationTokenService(IVerificationCodeRepository repository, IEmailVerificationService emailVerificationService){
@@ -47,8 +48,10 @@ public class ServiceConfig {
 
     public IUserAuthenticationService userAuthenticationService(IUserRepository repository,
                                                                 Converter<UserEntity, UserDTO> toDtoConverter,
-                                                                PasswordEncoder encoder){
-        return new UserAuthenticationService(repository, toDtoConverter, encoder);
+                                                                PasswordEncoder encoder,
+                                                                JwtTokenProvider jwtTokenProvider,
+                                                                UserHolder userHolder){
+        return new UserAuthenticationService(repository, toDtoConverter, encoder, jwtTokenProvider, userHolder);
     }
 
     public UserDetailsService jwtUserService(IUserAuthenticationService userService,
