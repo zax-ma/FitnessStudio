@@ -3,6 +3,7 @@ package com.example.userservice.config;
 import com.example.userservice.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -29,12 +30,11 @@ public class SecurityConfig{
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/v1/users/registration", "/api/v1/users/verification", "/api/v1/users/login", "/welcome")
-                .permitAll()
-                .requestMatchers("/api/v1/users/me")
-                .authenticated()
-             //   .requestMatchers("/api/v1/users", "/api/v1/users/{uuid}", "/api/v1/users/{uuid}/dt_update/{uuid}")
-            //    .hasRole("ADMIN")
+                .requestMatchers(HttpMethod.GET, "/api/v1/users/verification").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/users/registration").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/users/login").permitAll()
+                .requestMatchers("/api/v1/users/me").authenticated()
+                .requestMatchers("/api/v1/users/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
                 .and()
