@@ -19,6 +19,9 @@ public class IngredientEntity {
     @Column(name = "weight")
     private int weight;
 
+    public IngredientEntity() {
+    }
+
     public IngredientEntity(ProductEntity productEntity, int weight) {
         this.productEntity = productEntity;
         this.weight = weight;

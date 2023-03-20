@@ -8,6 +8,8 @@ import com.example.userservice.utils.validation.annotation.ValidParams;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +36,9 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public PageDTO<UserDTO> getUserPage(int page, int size){
-        return this.userAdminService.getUserPage(page, size);
+    public PageDTO<UserDTO> getUserPage(@PageableDefault(page = 0, size = 2)
+                                            Pageable pageable){
+        return this.userAdminService.getUserPage(pageable);
     }
 
     @GetMapping("/{uuid}")

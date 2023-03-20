@@ -2,6 +2,7 @@ package com.example.productservice.service;
 
 import com.example.productservice.dao.entity.ProductEntity;
 import com.example.productservice.dao.repo.IProductRepository;
+import com.example.productservice.dto.PageDTO;
 import com.example.productservice.dto.product.NewProductDTO;
 import com.example.productservice.dto.product.ProductDTO;
 import com.example.productservice.service.api.IProductService;
@@ -9,11 +10,10 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.core.parameters.P;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,23 +21,40 @@ public class ProductService implements IProductService {
 
     private IProductRepository repository;
 
-    private Converter<ProductEntity, ProductDTO> toDTOConverter;
+    private Converter<ProductEntity, ProductDTO> toDtoConverter;
 
-    public ProductService(IProductRepository repository, Converter<ProductEntity, ProductDTO> toDTOConverter) {
+    public ProductService(IProductRepository repository, Converter<ProductEntity, ProductDTO> toDtoConverter) {
         this.repository = repository;
-        this.toDTOConverter = toDTOConverter;
+        this.toDtoConverter = toDtoConverter;
     }
 
     @Override
     public void create(ProductEntity product) {
+        if(repository.existByTitle(product.getTitle())){
+            throw new RuntimeException("Product is already added");
+        }
         repository.save(product);
     }
 
     @Override
-    public Page<ProductDTO> getPage(Pageable pageble) {
-        Page<ProductEntity> page = repository.findAll(pageble);
-        return page.map(toDTOConverter::convert);
+    public PageDTO<ProductDTO> getPage(Pageable pageable) {
+        Page<ProductEntity> productEntityPage = repository.findAll(pageable);
+        List<ProductDTO> content = new ArrayList<>();
+
+        for (ProductEntity productEntity : productEntityPage){
+            content.add(toDtoConverter.convert(productEntity));
+        }
+        return new PageDTO<>(
+                productEntityPage.getNumber(),
+                productEntityPage.getSize(),
+                productEntityPage.getTotalPages(),
+                productEntityPage.getTotalElements(),
+                productEntityPage.isFirst(),
+                productEntityPage.getNumberOfElements(),
+                productEntityPage.isLast(),
+                content);
     }
+
 
     @Override
     public ProductEntity getById(UUID uuid) {

@@ -29,5 +29,11 @@ public class NewRecipeDTO {
         this.title = title;
     }
 
+    public List<IngredientDTO> getComposition() {
+        return composition;
+    }
 
+    public void setComposition(List<IngredientDTO> composition) {
+        this.composition = composition;
+    }
 }

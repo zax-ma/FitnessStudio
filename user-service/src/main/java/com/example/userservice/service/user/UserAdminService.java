@@ -11,6 +11,7 @@ import com.example.userservice.utils.exceptions.errors.EmailAlreadyRegisteredExc
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.sql.Timestamp;
@@ -54,11 +55,11 @@ public class UserAdminService implements IUserAdminService {
     }
 
     @Override
-    public PageDTO<UserDTO> getUserPage(int page, int size) {
-        Page<UserEntity> userEntityPage = userRepository.findAll(PageRequest.of(page, size));
+    public PageDTO<UserDTO> getUserPage(Pageable pageable) {
+        Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
         List<UserDTO> users = new ArrayList<>();
 
-        for (UserEntity userEntity : userRepository.findAll()){
+        for (UserEntity userEntity : userEntityPage){
             users.add(toDtoConverter.convert(userEntity));
         }
 

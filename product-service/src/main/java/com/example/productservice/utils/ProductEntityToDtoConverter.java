@@ -7,6 +7,16 @@ import org.springframework.core.convert.converter.Converter;
 public class ProductEntityToDtoConverter implements Converter<ProductEntity, ProductDTO> {
     @Override
     public ProductDTO convert(ProductEntity source) {
-        return null;
+        return new ProductDTO(
+                source.getUuid(),
+                source.getDt_create(),
+                source.getDt_update(),
+                source.getTitle(),
+                source.getWeight(),
+                source.getCalories(),
+                source.getProteins(),
+                source.getFats(),
+                source.getCarbohydrates()
+        );
     }
 }

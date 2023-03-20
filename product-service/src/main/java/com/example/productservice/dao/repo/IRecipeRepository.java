@@ -8,6 +8,6 @@ import java.util.UUID;
 public interface IRecipeRepository extends JpaRepository<RecipeEntity, UUID> {
 
     RecipeEntity findByTitle(String title);
-
+    boolean existByTitle(String title);
 
 }
