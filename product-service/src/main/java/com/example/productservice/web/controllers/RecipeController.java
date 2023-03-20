@@ -16,12 +16,10 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/recipe")
 public class RecipeController {
-    Converter<RecipeDTO, RecipeEntity> toEntity;
 
     IRecipeService service;
 
-    public RecipeController(Converter<RecipeDTO, RecipeEntity> toEntity, IRecipeService service) {
-        this.toEntity = toEntity;
+    public RecipeController(IRecipeService service) {
         this.service = service;
     }
 
