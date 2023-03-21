@@ -9,6 +9,7 @@ import com.example.userservice.security.JwtService;
 import com.example.userservice.security.UserHolder;
 import com.example.userservice.service.user.api.IUserAuthenticationService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
+import com.example.userservice.utils.exceptions.errors.MailNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -59,7 +60,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
     public UserEntity findByMail(String mail) {
         UserEntity user = this.repository.findByMail(mail);
         if(user == null){
-            throw new SingleErrorResponse("User with mail" + mail + " was not found");
+            throw new MailNotFoundException("User with mail" + mail + " was not found");
         }
         return user;
     }

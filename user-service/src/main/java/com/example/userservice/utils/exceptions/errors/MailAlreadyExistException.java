@@ -1,13 +1,14 @@
 package com.example.userservice.utils.exceptions.errors;
 
-public class UserAlreadyUpdatedException extends RuntimeException {
+public class MailAlreadyExistException extends RuntimeException {
 
     private String message;
-    public UserAlreadyUpdatedException(String msg) {
+    public MailAlreadyExistException(String msg) {
         super(msg);
         this.message = msg;
     }
 
+    @Override
     public String getMessage() {
         return message;
     }
@@ -16,3 +17,4 @@ public class UserAlreadyUpdatedException extends RuntimeException {
         this.message = message;
     }
 }
+

@@ -6,11 +6,11 @@ import com.example.userservice.dto.PageDTO;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.service.user.api.IUserAdminService;
-import com.example.userservice.utils.exceptions.SingleErrorResponse;
-import com.example.userservice.utils.exceptions.errors.EmailAlreadyRegisteredException;
+import com.example.userservice.utils.exceptions.errors.MailAlreadyExistException;
+import com.example.userservice.utils.exceptions.errors.UserAlreadyUpdatedException;
+import com.example.userservice.utils.exceptions.errors.UserNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,7 +46,7 @@ public class UserAdminService implements IUserAdminService {
             this.userRepository.save(newUser);
         } else {
             throw
-                    new EmailAlreadyRegisteredException();
+                    new MailAlreadyExistException("This e-mail is already exist");
         }
     }
 
@@ -74,26 +74,26 @@ public class UserAdminService implements IUserAdminService {
     public UserDTO getUserInfo(UUID uuid) {
 
         UserEntity userInfo = this.userRepository.findById(uuid)
-                .orElseThrow(() -> new SingleErrorResponse("User with uuid " + uuid + " was not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with uuid " + uuid + " was not found"));
         return this.toDtoConverter.convert(userInfo);
     }
 
     @Override
     public void updateUser(UUID uuid, Timestamp lst_update, UserAdminDTO user) {
         UserEntity userUpdate = this.userRepository.findById(uuid)
-                .orElseThrow(() -> new SingleErrorResponse("User with uuid " + uuid + " was not found"));
+                .orElseThrow(() -> new UserNotFoundException("User with uuid " + uuid + " was not found"));
 
         if (user.getMail().equals(this.userRepository.findByMail(user.getMail()))
              && !uuid.equals(this.userRepository.findById(uuid))) {
 
-            throw new SingleErrorResponse("This e-mail is already exist");
+            throw new MailAlreadyExistException("This e-mail is already exist");
 
         } else {
             if (Timestamp.valueOf(userUpdate.getDt_update()).equals(lst_update)) {
                 updatingUser(user, userUpdate);
             }
             else {
-                throw new EmailAlreadyRegisteredException();
+                throw new UserAlreadyUpdatedException("This user was updated");
             }
         }
     }

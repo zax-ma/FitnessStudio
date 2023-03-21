@@ -9,6 +9,7 @@ import com.example.userservice.security.JwtService;
 import com.example.userservice.service.code.api.IVerificationCodeService;
 import com.example.userservice.service.user.api.IUserRegistrationService;
 import com.example.userservice.utils.exceptions.SingleErrorResponse;
+import com.example.userservice.utils.exceptions.errors.MailAlreadyExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -44,7 +45,7 @@ public class UserRegistrationService implements IUserRegistrationService {
             codeService.createCode(newUser);
         } else {
             throw
-                    new SingleErrorResponse("User with this email is already registered");
+                    new MailAlreadyExistException("User with this email is already registered");
         }
 
         return new AuthenticationResponse(jwtService.generateToken(newUser));
