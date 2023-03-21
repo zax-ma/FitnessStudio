@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserAuthenticationService implements IUserAuthenticationService {
 
-    private IUserRepository repository;
-    private Converter<UserEntity, UserDTO> toDtoConverter;
-    private AuthenticationManager authenticationManager;
-    private JwtService jwtService;
-    private UserHolder userHolder;
+    private final IUserRepository repository;
+    private final Converter<UserEntity, UserDTO> toDtoConverter;
+    private final AuthenticationManager authenticationManager;
+    private final JwtService jwtService;
+    private final UserHolder userHolder;
 
 
     public UserAuthenticationService(IUserRepository repository,
@@ -57,7 +57,7 @@ public class UserAuthenticationService implements IUserAuthenticationService {
 
     @Override
     public UserEntity findByMail(String mail) {
-        UserEntity user = repository.findByMail(mail);
+        UserEntity user = this.repository.findByMail(mail);
         if(user == null){
             throw new SingleErrorResponse("User with mail" + mail + " was not found");
         }

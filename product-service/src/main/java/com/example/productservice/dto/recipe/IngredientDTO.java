@@ -1,29 +1,29 @@
 package com.example.productservice.dto.recipe;
 
-import io.micrometer.common.lang.NonNull;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
 public class IngredientDTO {
 
-    @NonNull
+    @NotNull
     private UUID product;
     @NotEmpty
     private int weight;
 
 
-    public IngredientDTO(@NonNull UUID product, int weight) {
+    public IngredientDTO(@NotNull UUID product, int weight) {
         this.product = product;
         this.weight = weight;
     }
 
-    @NonNull
+    @NotNull
     public UUID getProduct() {
         return product;
     }
 
-    public void setProduct(@NonNull UUID product) {
+    public void setProduct(@NotNull UUID product) {
         this.product = product;
     }
 

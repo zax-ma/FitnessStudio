@@ -20,9 +20,9 @@ import java.util.UUID;
 @Service
 public class ProductService implements IProductService {
 
-    private IProductRepository repository;
+    private final IProductRepository repository;
 
-    private Converter<ProductEntity, ProductDTO> toDtoConverter;
+    private final Converter<ProductEntity, ProductDTO> toDtoConverter;
 
     public ProductService(IProductRepository repository,
                           Converter<ProductEntity, ProductDTO> toDtoConverter) {
@@ -32,15 +32,15 @@ public class ProductService implements IProductService {
 
     @Override
     public void create(ProductEntity product) {
-        if(product.getTitle().equals(repository.findByTitle(product.getTitle())) ){
+        if(product.getTitle().equals(this.repository.findByTitle(product.getTitle())) ){
             throw new RuntimeException("Product is already added");
         }
-        repository.save(product);
+        this.repository.save(product);
     }
 
     @Override
     public PageDTO<ProductDTO> getPage(Pageable pageable) {
-        Page<ProductEntity> productEntityPage = repository.findAll(pageable);
+        Page<ProductEntity> productEntityPage = this.repository.findAll(pageable);
         List<ProductDTO> content = new ArrayList<>();
 
         for (ProductEntity productEntity : productEntityPage){
@@ -83,7 +83,7 @@ public class ProductService implements IProductService {
         productUpdate.setProteins(product.getProteins());
         productUpdate.setFats(product.getFats());
         productUpdate.setCarbohydrates(product.getCarbohydrates());
-        repository.save(productUpdate);
+        this.repository.save(productUpdate);
     }
 
 }

@@ -24,9 +24,9 @@ import java.util.UUID;
 @Service
 public class UserAdminService implements IUserAdminService {
 
-    private IUserRepository userRepository;
-    private Converter<UserEntity, UserDTO> toDtoConverter;
-    private PasswordEncoder passwordEncoder;
+    private final IUserRepository userRepository;
+    private final Converter<UserEntity, UserDTO> toDtoConverter;
+    private final PasswordEncoder passwordEncoder;
 
 
 
@@ -40,9 +40,9 @@ public class UserAdminService implements IUserAdminService {
 
     @Override
     public void createUser(UserEntity newUser) {
-        if (!userRepository.existsByMail(newUser.getMail())) {
+        if (!this.userRepository.existsByMail(newUser.getMail())) {
             assert newUser != null;
-            newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+            newUser.setPassword(this.passwordEncoder.encode(newUser.getPassword()));
             this.userRepository.save(newUser);
         } else {
             throw
@@ -52,11 +52,11 @@ public class UserAdminService implements IUserAdminService {
 
     @Override
     public PageDTO<UserDTO> getUserPage(Pageable pageable) {
-        Page<UserEntity> userEntityPage = userRepository.findAll(pageable);
+        Page<UserEntity> userEntityPage = this.userRepository.findAll(pageable);
         List<UserDTO> users = new ArrayList<>();
 
         for (UserEntity userEntity : userEntityPage){
-            users.add(toDtoConverter.convert(userEntity));
+            users.add(this.toDtoConverter.convert(userEntity));
         }
 
         return new PageDTO<>(

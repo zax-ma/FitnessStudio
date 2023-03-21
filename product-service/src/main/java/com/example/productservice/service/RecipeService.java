@@ -24,9 +24,9 @@ import java.util.stream.Collectors;
 @Service
 public class RecipeService implements IRecipeService {
 
-    Converter<RecipeEntity, RecipeDTO> toDtoConverter;
-    IRecipeRepository repository;
-    IProductService productService;
+    private final Converter<RecipeEntity, RecipeDTO> toDtoConverter;
+    private final IRecipeRepository repository;
+    private final IProductService productService;
 
     public RecipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
                          IRecipeRepository repository,
@@ -38,21 +38,21 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public void create(NewRecipeDTO recipe) {
-        if(recipe.getTitle().equals(repository.findByTitle(recipe.getTitle())) ){
+        if(recipe.getTitle().equals(this.repository.findByTitle(recipe.getTitle())) ){
             throw new RuntimeException("Recipe is already created");
         }
         RecipeEntity recipeEntity = convertToEntity(recipe);
-            repository.save(recipeEntity);
+            this.repository.save(recipeEntity);
     }
 
     @Override
     public PageDTO<RecipeDTO> getPage(Pageable pageable) {
 
-        Page<RecipeEntity> recipeEntityPage = repository.findAll(pageable);
+        Page<RecipeEntity> recipeEntityPage = this.repository.findAll(pageable);
         List<RecipeDTO> content = new ArrayList<>();
 
         for (RecipeEntity recipeEntity : recipeEntityPage){
-            content.add(toDtoConverter.convert(recipeEntity));
+            content.add(this.toDtoConverter.convert(recipeEntity));
         }
         return new PageDTO<>(
                 recipeEntityPage.getNumber(),
@@ -67,14 +67,14 @@ public class RecipeService implements IRecipeService {
 
     @Override
     public void update(UUID uuid, Timestamp dtUpdate, NewRecipeDTO recipe) {
-        RecipeEntity recipeUpdate = repository.findById(uuid)
+        RecipeEntity recipeUpdate = this.repository.findById(uuid)
                 .orElseThrow(() -> new EntityNotFoundException("uuid"));
 
         if (Timestamp.valueOf(recipeUpdate.getDt_update()).equals(dtUpdate)){
             List<IngredientEntity> ingredient = convertToProduct(recipe.getComposition());
             recipeUpdate.setTitle(recipe.getTitle());
             recipeUpdate.setComposition(ingredient);
-            repository.save(recipeUpdate);
+            this.repository.save(recipeUpdate);
         }
     }
 
@@ -99,8 +99,8 @@ public class RecipeService implements IRecipeService {
         RecipeEntity recipe = new RecipeEntity();
         recipe.setTitle(recipeCreateDTO.getTitle());
 
-        List<IngredientDTO> ingredionts = recipeCreateDTO.getComposition();
-        List<IngredientEntity> productList = convertToProduct(ingredionts);
+        List<IngredientDTO> ingredients = recipeCreateDTO.getComposition();
+        List<IngredientEntity> productList = convertToProduct(ingredients);
         recipe.setComposition(productList);
 
         return recipe;

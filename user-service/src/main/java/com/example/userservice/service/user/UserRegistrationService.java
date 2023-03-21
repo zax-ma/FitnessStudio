@@ -36,7 +36,7 @@ public class UserRegistrationService implements IUserRegistrationService {
 
     @Override
     public AuthenticationResponse registration(UserEntity newUser) {
-        if (!repository.existsByMail(newUser.getMail())) {
+        if (!this.repository.existsByMail(newUser.getMail())) {
             String encodedPassword = this.passwordEncoder.encode(newUser.getPassword());
 
             newUser.setPassword(encodedPassword);
