@@ -3,20 +3,19 @@ package com.example.userservice.dto;
 import com.example.userservice.utils.validation.annotation.CharSize;
 import com.example.userservice.utils.validation.annotation.EmailPattern;
 import com.example.userservice.utils.validation.annotation.NotEmptyNorBlank;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class UserRegistrationDTO {
 
- //   @JsonProperty("mail")
+    @JsonProperty("mail")
     @NotEmptyNorBlank
     @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}")
     private String mail;
- //   @JsonProperty("fio")
-
+    @JsonProperty("fio")
     @NotEmptyNorBlank
     private String fio;
-//    @JsonProperty("password")
-
+    @JsonProperty("password")
     @NotEmptyNorBlank
     @CharSize(min = "3", max = "16")
     private String password;

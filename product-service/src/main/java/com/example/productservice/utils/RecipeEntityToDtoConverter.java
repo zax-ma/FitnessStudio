@@ -10,7 +10,9 @@ import com.example.productservice.dto.recipe.RecipeDTO;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+
 @Component
 public class RecipeEntityToDtoConverter implements Converter<RecipeEntity, RecipeDTO> {
     private Converter<ProductEntity, ProductDTO> productToDTOConverter;
@@ -19,11 +21,16 @@ public class RecipeEntityToDtoConverter implements Converter<RecipeEntity, Recip
     public RecipeEntityToDtoConverter() {
     }
 
+    public RecipeEntityToDtoConverter(Converter<ProductEntity, ProductDTO> productToDTOConverter, List<CompositionDTO> productComposition) {
+        this.productToDTOConverter = productToDTOConverter;
+        this.productComposition = productComposition;
+    }
+
     @Override
     public RecipeDTO convert(RecipeEntity recipe) {
         RecipeDTO recipeDTO = new RecipeDTO();
-        AuxFieldsDTO auxFieldsDTO = new AuxFieldsDTO(recipe.getUuid(),
-                recipe.getDt_create(), recipe.getDt_update());
+
+        AuxFieldsDTO auxFieldsDTO = new AuxFieldsDTO();
         recipeDTO.setUuid(auxFieldsDTO.getUuid());
         recipeDTO.setDt_create(auxFieldsDTO.getDt_create());
         recipeDTO.setDt_update(auxFieldsDTO.getDt_update());
@@ -33,70 +40,66 @@ public class RecipeEntityToDtoConverter implements Converter<RecipeEntity, Recip
         List<CompositionDTO> productComposition = calculateRecipeComposition(productList);
         recipeDTO.setComposition(productComposition);
 
-        int weight = (int) round(productComposition
+        int weight = productComposition
                 .stream()
                 .mapToInt(CompositionDTO::getWeight)
-                .sum(), 2);
-        int calories = (int) round(productComposition
+                .sum();
+        int calories = productComposition
                 .stream()
                 .mapToInt(CompositionDTO::getCalories)
-                .sum(), 2);
-        double proteins = round(productComposition
+                .sum();
+        double proteins =productComposition
                 .stream()
                 .mapToDouble(CompositionDTO::getProteins)
-                .sum(), 2);
-        double fats = round(productComposition
+                .sum();
+        double fats = productComposition
                 .stream()
                 .mapToDouble(CompositionDTO::getFats)
-                .sum(), 2);
-        double carbohydrates = round(productComposition
+                .sum();
+        double carbohydrates = productComposition
                 .stream()
                 .mapToDouble(CompositionDTO::getCarbohydrates)
-                .sum(), 2);
+                .sum();
 
         recipeDTO.setWeight(weight);
         recipeDTO.setCalories(calories);
-        recipeDTO.setProteins(round(proteins, 1));
-        recipeDTO.setFats(round(fats, 1));
-        recipeDTO.setCarbohydrates(round(carbohydrates, 1));
+        recipeDTO.setProteins(proteins);
+        recipeDTO.setFats(fats);
+        recipeDTO.setCarbohydrates(carbohydrates);
 
         return  recipeDTO;
     }
 
     private List<CompositionDTO> calculateRecipeComposition(List<IngredientEntity> productList) {
-        List<CompositionDTO> recipeComposition = productList.stream()
-                .map(product -> {
+        List<CompositionDTO> recipeComposition = new ArrayList<>();
+
+        for (IngredientEntity product : productList){
+
                     CompositionDTO compositionDTO = new CompositionDTO();
 
-                    ProductDTO productDTO = productToDTOConverter.convert(product.getProductEntity());
-                    int actualWeight = product.getWeight();
-                    int standardWeight = productDTO.getWeight();
-                    double ratio = 1.0 * actualWeight / standardWeight;
-                    int calories = (int) (ratio * productDTO.getCalories());
-                    double proteins = round(ratio * productDTO.getProteins(),1);
-                    double fats = round(ratio * productDTO.getFats(), 1);
-                    double carbohydrates = round(ratio * productDTO.getCarbohydrates(), 1);
+                    ProductEntityToDtoConverter conv = new ProductEntityToDtoConverter();
+
+                    ProductDTO productDTO = conv.convert(product.getProductEntity());
+                    int weight = productDTO.getWeight();
+                    double k = (double) weight / productDTO.getWeight();
+                    int calories = (int) (productDTO.getCalories() * k);
+                    double proteins = productDTO.getProteins() * k;
+                    double fats = productDTO.getFats() * k;
+                    double carbohydrates = productDTO.getCarbohydrates() * k;
 
                     compositionDTO.setProduct(productDTO);
-                    compositionDTO.setWeight(actualWeight);
+                    compositionDTO.setWeight(weight);
                     compositionDTO.setCalories(calories);
                     compositionDTO.setProteins(proteins);
                     compositionDTO.setFats(fats);
                     compositionDTO.setCarbohydrates(carbohydrates);
 
-                    return compositionDTO;
-                })
-                .toList();
+                    recipeComposition.add(compositionDTO);
+                }
+
 
         return recipeComposition;
     }
 
-    private double round(double number, int places) {
-        if (places < 1 || places > 1000) {
-            throw new IllegalArgumentException("Can't round to '"
-                    + places + "' decimal places!");
-        }
-        double multiplier = 10.0 * places;
-        return Math.round(number * multiplier) / multiplier;
-    }
+
 }

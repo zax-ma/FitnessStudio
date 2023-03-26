@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(schema = "app", name = "recipe")
+@Table(schema = "app", name = "recipes")
 public class RecipeEntity {
     @Id
-    @Column(name = "uuid")
+    @Column(name = "id", columnDefinition = "uuid")
     private UUID uuid;
 
     @Column(name = "dt_create")

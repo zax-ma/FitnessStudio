@@ -23,14 +23,14 @@ public class VerificationCodeService implements IVerificationCodeService {
 
     @Override
     public void createCode(UserEntity newUser) {
-            String token = UUID.randomUUID().toString();
+            String code = UUID.randomUUID().toString();
             VerificationCodeEntity confirmationToken = new VerificationCodeEntity(
-                    token,
+                    code,
                     LocalDateTime.now(),
                     LocalDateTime.now().plusMinutes(60),
                     newUser);
             repository.save(confirmationToken);
-            sender.sendVerificationEmail(newUser.getMail(), token);
+            sender.sendVerificationEmail(newUser.getMail(), code);
     }
 
     public VerificationCodeEntity getCode(String code) {

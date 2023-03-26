@@ -1,9 +1,6 @@
 package com.example.productservice.dao.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -13,14 +10,14 @@ import java.util.UUID;
 public class ProductEntity {
 
     @Id
-    @Column(name = "uuid")
-    UUID uuid;
+    @Column(name = "id", columnDefinition = "uuid")
+    private UUID uuid;
 
     @Column(name = "dt_create")
-    LocalDateTime dt_create;
+    private LocalDateTime dt_create;
 
     @Column(name = "dt_update")
-    LocalDateTime dt_update;
+    private LocalDateTime dt_update;
 
     @Column(name = "title")
     private String title;
@@ -39,6 +36,9 @@ public class ProductEntity {
 
     @Column(name = "carbohydrates")
     private double carbohydrates;
+
+    public ProductEntity() {
+    }
 
     public ProductEntity(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update, String title, int weight, int calories, double proteins, double fats, double carbohydrates) {
         this.uuid = uuid;

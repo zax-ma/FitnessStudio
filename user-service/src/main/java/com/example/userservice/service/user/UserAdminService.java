@@ -11,6 +11,7 @@ import com.example.userservice.utils.exceptions.errors.UserAlreadyUpdatedExcepti
 import com.example.userservice.utils.exceptions.errors.UserNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,10 +53,10 @@ public class UserAdminService implements IUserAdminService {
 
     @Override
     public PageDTO<UserDTO> getUserPage(Pageable pageable) {
-        Page<UserEntity> userEntityPage = this.userRepository.findAll(pageable);
+        Page<UserEntity> userEntityPage = this.userRepository.findAllPage(pageable);
         List<UserDTO> users = new ArrayList<>();
 
-        for (UserEntity userEntity : userEntityPage){
+        for (UserEntity userEntity : this.userRepository.findAll()){
             users.add(this.toDtoConverter.convert(userEntity));
         }
 
@@ -79,17 +80,17 @@ public class UserAdminService implements IUserAdminService {
     }
 
     @Override
-    public void updateUser(UUID uuid, Timestamp lst_update, UserAdminDTO user) {
-        UserEntity userUpdate = this.userRepository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException("User with uuid " + uuid + " was not found"));
+    public void updateUser(UUID id, Timestamp dt_update, UserAdminDTO user) {
+        UserEntity userUpdate = this.userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException("User with uuid " + id + " was not found"));
 
         if (user.getMail().equals(this.userRepository.findByMail(user.getMail()))
-             && !uuid.equals(this.userRepository.findById(uuid))) {
+             && !id.equals(this.userRepository.findById(id))) {
 
             throw new MailAlreadyExistException("This e-mail is already exist");
 
         } else {
-            if (Timestamp.valueOf(userUpdate.getDt_update()).equals(lst_update)) {
+            if (Timestamp.valueOf(userUpdate.getDt_update()).equals(dt_update)) {
                 updatingUser(user, userUpdate);
             }
             else {
@@ -105,7 +106,7 @@ public class UserAdminService implements IUserAdminService {
         userUpdate.setStatus(user.getStatus());
         userUpdate.setFio(user.getFio());
         userUpdate.setPassword(user.getPassword());
-        userRepository.save(userUpdate);
+        this.userRepository.save(userUpdate);
     }
 
 

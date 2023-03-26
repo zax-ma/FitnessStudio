@@ -28,23 +28,22 @@ public class ProductController {
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody NewProductDTO product) {
-        ProductEntity productEntity = toEntity.convert(product);
+        ProductEntity productEntity = this.toEntity.convert(product);
         this.productService.create(productEntity);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
     }
     @GetMapping
-    public PageDTO<ProductDTO> getUserPage(Pageable pageable) {
+    public PageDTO<ProductDTO> getProductPage(Pageable pageable) {
         return this.productService.getPage(pageable);
     }
 
-    @PutMapping("/{uuid}/dt_update/{lastUpdated}")
-    public ResponseEntity<String> updateUser(@PathVariable UUID uuid,
-                                             @PathVariable Timestamp lst_updated,
-                                             @RequestBody NewProductDTO product) {
-        this.productService.updateProduct(uuid, lst_updated, product);
-        return ResponseEntity.ok()
-                .build();
+    @PutMapping("/{uuid}/dt_update/{dt_update}")
+    public ResponseEntity<ProductEntity> updateProduct(@PathVariable("uuid") UUID id,
+                                                @PathVariable("dt_update") Timestamp dt_update,
+                                                @RequestBody NewProductDTO product) {
+        this.productService.updateProduct(id, dt_update, product);
+        return ResponseEntity.ok(this.productService.getById(id));
     }
 
 }

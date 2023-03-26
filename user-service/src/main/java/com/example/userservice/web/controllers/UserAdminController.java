@@ -10,6 +10,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -42,9 +43,8 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public PageDTO<UserDTO> getUserPage(@PageableDefault(page = 0, size = 2)
-                                            Pageable pageable){
-        return this.userAdminService.getUserPage(pageable);
+    public ResponseEntity<PageDTO> getUserPage(@PageableDefault(page = 0, size = 20) Pageable pageable){
+        return ResponseEntity.status(HttpStatus.OK).body(userAdminService.getUserPage(pageable));
     }
 
     @GetMapping("/{uuid}")
@@ -55,12 +55,12 @@ private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController
 
     @PutMapping("/{uuid}/dt_update/{dt_update}")
     public ResponseEntity<UserDTO> updateUser(
-            @PathVariable("uuid") UUID uuid,
+            @PathVariable("uuid") UUID id,
             @PathVariable("dt_update") Timestamp dt_update,
             @RequestBody UserAdminDTO user) throws JsonProcessingException {
-        userAdminService.updateUser(uuid, dt_update, user);
+        userAdminService.updateUser(id, dt_update, user);
         return ResponseEntity
-                .ok(this.userAdminService.getUserInfo(uuid));
+                .ok(this.userAdminService.getUserInfo(id));
     }
 
 }

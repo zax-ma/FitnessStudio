@@ -4,6 +4,7 @@ import com.example.productservice.dao.entity.IngredientEntity;
 import com.example.productservice.dao.entity.ProductEntity;
 import com.example.productservice.dao.entity.RecipeEntity;
 import com.example.productservice.dao.repo.IRecipeRepository;
+import com.example.productservice.dto.AuxFieldsDTO;
 import com.example.productservice.dto.PageDTO;
 import com.example.productservice.dto.recipe.IngredientDTO;
 import com.example.productservice.dto.recipe.NewRecipeDTO;
@@ -11,12 +12,14 @@ import com.example.productservice.dto.recipe.RecipeDTO;
 import com.example.productservice.service.api.IProductService;
 import com.example.productservice.service.api.IRecipeService;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -27,13 +30,16 @@ public class RecipeService implements IRecipeService {
     private final Converter<RecipeEntity, RecipeDTO> toDtoConverter;
     private final IRecipeRepository repository;
     private final IProductService productService;
+    private final ConversionService conversionService;
 
     public RecipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
                          IRecipeRepository repository,
-                         IProductService productService) {
+                         IProductService productService,
+                         ConversionService conversionService) {
         this.toDtoConverter = toDtoConverter;
         this.repository = repository;
         this.productService = productService;
+        this.conversionService = conversionService;
     }
 
     @Override
@@ -41,8 +47,7 @@ public class RecipeService implements IRecipeService {
         if(recipe.getTitle().equals(this.repository.findByTitle(recipe.getTitle())) ){
             throw new RuntimeException("Recipe is already created");
         }
-        RecipeEntity recipeEntity = convertToEntity(recipe);
-            this.repository.save(recipeEntity);
+            this.repository.save(this.convertToEntity(recipe));
     }
 
     @Override
@@ -66,11 +71,11 @@ public class RecipeService implements IRecipeService {
     }
 
     @Override
-    public void update(UUID uuid, Timestamp dtUpdate, NewRecipeDTO recipe) {
-        RecipeEntity recipeUpdate = this.repository.findById(uuid)
+    public void update(UUID id, Timestamp dt_update, NewRecipeDTO recipe) {
+        RecipeEntity recipeUpdate = this.repository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("uuid"));
 
-        if (Timestamp.valueOf(recipeUpdate.getDt_update()).equals(dtUpdate)){
+        if (Timestamp.valueOf(recipeUpdate.getDt_update()).equals(dt_update)){
             List<IngredientEntity> ingredient = convertToProduct(recipe.getComposition());
             recipeUpdate.setTitle(recipe.getTitle());
             recipeUpdate.setComposition(ingredient);
@@ -97,8 +102,11 @@ public class RecipeService implements IRecipeService {
     private RecipeEntity convertToEntity(NewRecipeDTO recipeCreateDTO) {
 
         RecipeEntity recipe = new RecipeEntity();
+        AuxFieldsDTO aux = new AuxFieldsDTO();
+        recipe.setUuid(aux.getUuid());
+        recipe.setDt_create(aux.getDt_create());
+        recipe.setDt_update(aux.getDt_update());
         recipe.setTitle(recipeCreateDTO.getTitle());
-
         List<IngredientDTO> ingredients = recipeCreateDTO.getComposition();
         List<IngredientEntity> productList = convertToProduct(ingredients);
         recipe.setComposition(productList);

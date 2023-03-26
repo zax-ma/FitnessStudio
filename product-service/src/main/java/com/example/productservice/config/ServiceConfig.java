@@ -11,6 +11,7 @@ import com.example.productservice.service.RecipeService;
 import com.example.productservice.service.api.IProductService;
 import com.example.productservice.service.api.IRecipeService;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.ConversionService;
 import org.springframework.core.convert.converter.Converter;
 
 @Configuration
@@ -23,8 +24,9 @@ public class ServiceConfig {
 
     public IRecipeService recipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
                                         IRecipeRepository repository,
-                                        IProductService productService){
-        return new RecipeService(toDtoConverter,repository,productService);
+                                        IProductService productService,
+                                        ConversionService conversionService){
+        return new RecipeService(toDtoConverter,repository,productService, conversionService);
     }
 
 }

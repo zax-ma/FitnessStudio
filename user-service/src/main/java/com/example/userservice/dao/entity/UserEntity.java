@@ -3,6 +3,7 @@ package com.example.userservice.dao.entity;
 import com.example.userservice.dto.UserRole;
 import com.example.userservice.dto.UserStatus;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Type;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,9 +16,10 @@ import java.util.UUID;
 @Entity
 @Table(schema = "app", name = "users")
 public class UserEntity implements UserDetails {
-    @Column(name = "id")
-    private UUID uuid;
     @Id
+    @Column(name = "id", columnDefinition = "uuid")
+    private UUID uuid;
+
     @Column(name = "mail")
     private String mail;
     @Column(name = "fio")

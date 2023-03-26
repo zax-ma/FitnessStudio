@@ -16,9 +16,6 @@ public class AuxFieldsDTO {
     private LocalDateTime dt_update;
 
     public AuxFieldsDTO() {
-    }
-
-    public AuxFieldsDTO(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update) {
         this.uuid = UUID.randomUUID();
         this.dt_create = LocalDateTime.now();
         this.dt_update = LocalDateTime.now();

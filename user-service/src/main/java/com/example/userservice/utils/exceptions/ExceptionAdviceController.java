@@ -7,17 +7,15 @@ import com.example.userservice.utils.exceptions.annotations.RequiredParameterIsE
 import com.example.userservice.utils.exceptions.annotations.RoleParamsException;
 import com.example.userservice.utils.exceptions.errors.*;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
-import java.util.List;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class ExceptionAdvice {
-
+public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
+    @ResponseBody
     @ExceptionHandler({CharSizeException.class,
             EmailPatternException.class, RequiredParameterIsEmptyException.class,
             RoleParamsException.class})
@@ -26,13 +24,15 @@ public class ExceptionAdvice {
      return new ErrorDTO(ex.getCode(), ex.getMessage());
 
     }
-    @ExceptionHandler(value
-            = UserNotFoundException.class)
+    @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleUserNotFound(UserNotFoundException ex)
 
     {
-        return new ErrorResponse("error", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage());
+                errorResponse.setLogref("error");
+        return errorResponse;
     }
 
     @ExceptionHandler(value
@@ -41,7 +41,10 @@ public class ExceptionAdvice {
     public @ResponseBody ErrorResponse handleUserAlreadyUpdated(UserAlreadyUpdatedException ex)
 
     {
-        return new ErrorResponse("error", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage());
+                errorResponse.setLogref("error");
+        return errorResponse;
     }
 
 
@@ -51,29 +54,23 @@ public class ExceptionAdvice {
     public @ResponseBody ErrorResponse handleMailNotFound(MailNotFoundException ex)
 
     {
-        return new ErrorResponse("error", ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse(
+                ex.getMessage());
+                errorResponse.setLogref("error");
+        return errorResponse;
     }
 
 
-/*    @ExceptionHandler(value
+    @ExceptionHandler(value
             = MailAlreadyExistException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleMailAlreadyExist(MailAlreadyExistException ex)
 
     {
-        return new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage());
-    }*/
-
-
-    @ExceptionHandler(value
-            = MailAlreadyExistException.class)
-    public ResponseEntity<List<ErrorResponse>> handleMailAlreadyExist(MailAlreadyExistException ex)
-
-    {
-        ErrorResponse errorResponse = new ErrorResponse("error",
+        ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage());
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(List.of(errorResponse));
+                errorResponse.setLogref("error");
+            return errorResponse;
     }
-
 
 }
