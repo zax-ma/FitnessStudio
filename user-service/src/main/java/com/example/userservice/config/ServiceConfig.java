@@ -31,7 +31,7 @@ public class ServiceConfig {
         return new UserAdminService(repository, toDTOConverter, passwordEncoder);
     }
 
-    public IVerificationCodeService verificationTokenService(IVerificationCodeRepository repository, IEmailVerificationService emailVerificationService){
+    public IVerificationCodeService verificationCodeService(IVerificationCodeRepository repository, IEmailVerificationService emailVerificationService){
         return new VerificationCodeService(repository, emailVerificationService);
     }
 

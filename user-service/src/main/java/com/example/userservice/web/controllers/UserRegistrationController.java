@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/api/v1/users")
 public class UserRegistrationController {
 
-    IUserRegistrationService userRegistrationService;
-    Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
+    private final IUserRegistrationService userRegistrationService;
+    private final Converter<UserRegistrationDTO, UserEntity> toEntityConverter;
 
 
     public UserRegistrationController(IUserRegistrationService userRegistrationService,

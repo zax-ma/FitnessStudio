@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(value = "/api/v1/users/me")
 public class UserController {
-    IUserAuthenticationService service;
-    Converter<UserEntity, UserDTO> toDTOConverter;
+    private final IUserAuthenticationService service;
+    private final Converter<UserEntity, UserDTO> toDTOConverter;
 
     public UserController(IUserAuthenticationService service, Converter<UserEntity, UserDTO> toDTOConverter) {
         this.service = service;

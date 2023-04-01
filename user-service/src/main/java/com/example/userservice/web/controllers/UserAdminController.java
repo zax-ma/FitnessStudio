@@ -25,8 +25,8 @@ import java.util.UUID;
 public class UserAdminController {
 
 private static final Logger LOGGER = LoggerFactory.getLogger(UserAdminController.class);
-    private IUserAdminService userAdminService;
-    private Converter<UserAdminDTO, UserEntity> toEntityConverter;
+    private final IUserAdminService userAdminService;
+    private final Converter<UserAdminDTO, UserEntity> toEntityConverter;
 
     public UserAdminController(IUserAdminService userAdminService, Converter<UserAdminDTO, UserEntity> toEntityConverter) {
         this.userAdminService = userAdminService;

@@ -6,7 +6,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:32766/db_users
+    url: jdbc:postgresql://db:5432/db_users/
     username: postgres
     password: postgres
   jpa:
@@ -23,7 +23,7 @@ spring:
   mail:
     default-encoding: UTF-8
     host: smtp.mail.ru
-    username: 
+    username:
     password:
     port: 465
     properties:

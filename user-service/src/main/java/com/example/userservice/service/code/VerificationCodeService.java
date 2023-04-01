@@ -6,15 +6,17 @@ import com.example.userservice.dao.repo.IVerificationCodeRepository;
 import com.example.userservice.service.email.api.IEmailVerificationService;
 import com.example.userservice.service.code.api.IVerificationCodeService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 @Service
+@Transactional
 public class VerificationCodeService implements IVerificationCodeService {
 
-    IVerificationCodeRepository repository;
+    private final IVerificationCodeRepository repository;
 
-    IEmailVerificationService sender;
+    private final IEmailVerificationService sender;
 
     public VerificationCodeService(IVerificationCodeRepository repository, IEmailVerificationService sender) {
         this.repository = repository;

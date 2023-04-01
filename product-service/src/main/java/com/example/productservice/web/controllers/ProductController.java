@@ -17,9 +17,9 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/product")
 public class ProductController {
-    Converter<NewProductDTO, ProductEntity> toEntity;
+   private final Converter<NewProductDTO, ProductEntity> toEntity;
 
-    IProductService productService;
+   private final IProductService productService;
 
     public ProductController(Converter<NewProductDTO, ProductEntity> toEntity, IProductService productService) {
         this.toEntity = toEntity;

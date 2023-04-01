@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/v1/users/login")
 public class UserLoginController {
 
-    IUserAuthenticationService service;
+    private final IUserAuthenticationService service;
     public UserLoginController(IUserAuthenticationService service) {
         this.service = service;
     }

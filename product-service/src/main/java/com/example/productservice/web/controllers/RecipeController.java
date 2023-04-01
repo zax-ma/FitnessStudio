@@ -17,9 +17,9 @@ import java.util.UUID;
 @RequestMapping("/api/v1/recipe")
 public class RecipeController {
 
-    IRecipeService service;
+    private final IRecipeService service;
 
-    Converter<NewRecipeDTO, RecipeEntity> converter;
+   private final Converter<NewRecipeDTO, RecipeEntity> converter;
 
 
     public RecipeController(IRecipeService service, Converter<NewRecipeDTO, RecipeEntity> converter) {

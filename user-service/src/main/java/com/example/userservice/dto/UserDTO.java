@@ -6,16 +6,21 @@ import java.util.UUID;
 
 public class UserDTO {
     @JsonProperty("id")
-    UUID uuid;
+    private UUID uuid;
     @JsonProperty("dt_create")
-    LocalDateTime dt_create;
+    private LocalDateTime dt_create;
     @JsonProperty("dt_update")
-    LocalDateTime dt_update;
-    @JsonProperty("status") UserStatus status;
-    @JsonProperty("role") UserRole role;
-    @JsonProperty("fio") String fio;
-    @JsonProperty("mail") String mail;
-    @JsonProperty("password") String password;
+    private LocalDateTime dt_update;
+    @JsonProperty("status")
+    private UserStatus status;
+    @JsonProperty("role")
+    private UserRole role;
+    @JsonProperty("fio")
+    private String fio;
+    @JsonProperty("mail")
+    private String mail;
+    @JsonProperty("password")
+    private String password;
 
 
     public UserDTO(UUID uuid, LocalDateTime dt_create, LocalDateTime dt_update, UserStatus status, UserRole role, String fio, String mail, String password) {

@@ -5,11 +5,11 @@ import java.util.List;
 public class PageDTO<T> {
     private int number;
     private int size;
-    int totalPage;
-    long totalElements;
-    boolean first;
-    long numberOfElements;
-    boolean last;
+    private int totalPage;
+    private long totalElements;
+    private boolean first;
+    private long numberOfElements;
+    private boolean last;
     List<T> content;
 
     public PageDTO(int number, int size, int totalPage, long totalElements, boolean first, long numberOfElements, boolean last, List<T> content) {

@@ -1,0 +1,1 @@
+docker save -o fitness-studio.dump fitness-studio_product-service:1.0.0 fitness-studio_user-service:1.0.0 fitness-studio_pgadmin:1.0.0 fitness-studio_postgresql:1.0.0

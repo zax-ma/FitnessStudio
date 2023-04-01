@@ -1,0 +1,46 @@
+version: "3.5"
+services: 
+### Postgres database ###
+  db:
+    container_name: pg_container
+    build: postgresql
+    image: fitness-studio_postgresql:1.0.0
+    restart: always 
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    networks: 
+      - fitness-studio_ntwrk
+
+  pgadmin:
+    container_name: pgadmin4_container
+    build: pgadmin
+    image: fitness-studio_pgadmin:1.0.0
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: postgres
+    ports:
+      - "5050:80"
+    networks: 
+      - fitness-studio_ntwrk
+
+### Services ###
+
+  product-service:
+    container_name: product_service_container
+    build: product-service
+    image: fitness-studio_product-service
+    networks:
+      - fitness-studio_ntwrk
+
+  user-service:
+    container_name: user_service_container
+    build: user-service
+    image: fitness-studio_user-service
+    networks:
+      - fitness-studio_ntwrk
+
+networks:
+  fitness-studio_ntwrk:
+    name: fitness-studio_ntwrk 
