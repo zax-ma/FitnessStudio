@@ -8,6 +8,9 @@ public class UserAlreadyUpdatedException extends RuntimeException {
         this.message = msg;
     }
 
+    public String getCode() {
+        return "03";
+    }
     public String getMessage() {
         return message;
     }

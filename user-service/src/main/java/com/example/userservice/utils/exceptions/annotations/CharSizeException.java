@@ -10,11 +10,11 @@ public class CharSizeException extends RequestException {
     }
     @Override
     public String getCode() {
-        return "03";
+        return "13";
     }
 
     @Override
     public String getMessage() {
-        return "Ooops, required parameter "+ paramName + " is shorter then 3 or longer then 16";
+        return "Ooops, required parameter "+ paramName + " is shorter then 3 or longer than 16 chars";
     }
 }

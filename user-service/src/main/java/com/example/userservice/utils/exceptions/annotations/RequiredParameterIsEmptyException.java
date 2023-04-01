@@ -12,7 +12,7 @@ public class RequiredParameterIsEmptyException extends RequestException {
 
     @Override
     public String getCode() {
-        return "01";
+        return "11";
     }
 
     @Override

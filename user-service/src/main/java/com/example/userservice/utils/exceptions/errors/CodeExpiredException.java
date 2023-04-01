@@ -1,15 +1,14 @@
 package com.example.userservice.utils.exceptions.errors;
 
-public class MailNotFoundException extends RuntimeException {
-
+public class CodeExpiredException extends RuntimeException{
     private String message;
-    public MailNotFoundException(String msg) {
+    public CodeExpiredException(String msg) {
         super(msg);
         this.message = msg;
     }
 
     public String getCode() {
-        return "02";
+        return "06";
     }
 
     @Override
@@ -21,4 +20,3 @@ public class MailNotFoundException extends RuntimeException {
         this.message = message;
     }
 }
-

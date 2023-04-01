@@ -1,12 +1,5 @@
 package com.example.userservice.utils;
 
-import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.dto.EUserRole;
-import com.example.userservice.utils.convertors.RoleConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.convert.converter.Converter;
-
 public class Slf4jLogger {
 
 

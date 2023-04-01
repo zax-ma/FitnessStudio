@@ -10,6 +10,9 @@ public class UserNotFoundException extends RuntimeException {
         this.message = msg;
     }
 
+    public String getCode() {
+        return "05";
+    }
     @Override
     public String getMessage() {
         return message;

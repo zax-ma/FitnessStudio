@@ -15,14 +15,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class EmailVerificationService implements IEmailVerificationService {
+@Transactional
+public class EmailVerificationSendingService implements IEmailVerificationService {
 
-    private Logger LOGGER = LoggerFactory.getLogger(EmailVerificationService.class);
+    private Logger LOGGER = LoggerFactory.getLogger(EmailVerificationSendingService.class);
     private JavaMailSender javaMailSender;
     private IUserRepository userRepository;
     private IVerificationCodeRepository tokenRepository;
 
-    public EmailVerificationService(JavaMailSender javaMailSender, IUserRepository userRepository, IVerificationCodeRepository tokenRepository) {
+    public EmailVerificationSendingService(JavaMailSender javaMailSender, IUserRepository userRepository, IVerificationCodeRepository tokenRepository) {
         this.javaMailSender = javaMailSender;
         this.userRepository = userRepository;
         this.tokenRepository = tokenRepository;

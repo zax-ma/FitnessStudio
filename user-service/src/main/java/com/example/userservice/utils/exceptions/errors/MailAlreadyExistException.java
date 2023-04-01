@@ -8,6 +8,10 @@ public class MailAlreadyExistException extends RuntimeException {
         this.message = msg;
     }
 
+    public String getCode() {
+        return "01";
+    }
+
     @Override
     public String getMessage() {
         return message;

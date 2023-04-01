@@ -4,6 +4,8 @@ import com.example.userservice.security.AuthenticationResponse;
 import com.example.userservice.dao.entity.UserEntity;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.service.user.api.IUserRegistrationService;
+import com.example.userservice.utils.validation.annotation.ValidParams;
+import jakarta.validation.Valid;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +26,7 @@ public class UserRegistrationController {
         this.userRegistrationService = userRegistrationService;
         this.toEntityConverter = toEntityConverter;
     }
-
+    @ValidParams
     @PostMapping("/registration")
     public ResponseEntity<AuthenticationResponse> create(@RequestBody UserRegistrationDTO newUserDTO){
         UserEntity newUser = this.toEntityConverter.convert(newUserDTO);
@@ -34,7 +36,7 @@ public class UserRegistrationController {
                 .build();
 
     }
-
+    @ValidParams
     @GetMapping("/verification")
     public ResponseEntity<String> verifyToken(@RequestParam("code") String code,
                                              @RequestParam("mail") String mail) {

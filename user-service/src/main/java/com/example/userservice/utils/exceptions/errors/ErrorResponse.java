@@ -1,5 +1,7 @@
 package com.example.userservice.utils.exceptions.errors;
 
+import java.util.function.Function;
+
 public class ErrorResponse {
     private String logref;
     private String message;
@@ -27,4 +29,6 @@ public class ErrorResponse {
     public void setMessage(String message) {
         this.message = message;
     }
+
+
 }

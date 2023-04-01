@@ -10,7 +10,7 @@ public class UserRegistrationDTO {
 
     @JsonProperty("mail")
     @NotEmptyNorBlank
-    @EmailPattern("^[a-zA-Z0-9_+&*-] + (?:\\\\.[a-zA-Z0-9_+&*-] + )*@(?:[a-zA-Z0-9-]+\\\\.) + [a-zA-Z]{2,7}")
+    @EmailPattern("^(.+)@(.+)$")
     private String mail;
     @JsonProperty("fio")
     @NotEmptyNorBlank

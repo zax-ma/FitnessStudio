@@ -8,7 +8,7 @@ import com.example.userservice.security.AuthenticationResponse;
 import com.example.userservice.security.JwtService;
 import com.example.userservice.service.code.api.IVerificationCodeService;
 import com.example.userservice.service.user.api.IUserRegistrationService;
-import com.example.userservice.utils.exceptions.SingleErrorResponse;
+import com.example.userservice.utils.exceptions.errors.CodeExpiredException;
 import com.example.userservice.utils.exceptions.errors.MailAlreadyExistException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -61,7 +61,7 @@ public class UserRegistrationService implements IUserRegistrationService {
                 && !time.after(Timestamp.valueOf(verificationCode.getExpiryAt()))) {
             user.setStatus(UserStatus.ACTIVATED);
             this.repository.save(user);
-        } else throw new SingleErrorResponse("Code expired!");
+        } else throw new CodeExpiredException("Code expired!");
     }
 }
 

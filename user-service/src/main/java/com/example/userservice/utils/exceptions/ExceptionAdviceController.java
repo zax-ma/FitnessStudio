@@ -1,6 +1,6 @@
 package com.example.userservice.utils.exceptions;
 
-import com.example.userservice.dto.ErrorDTO;
+
 import com.example.userservice.utils.exceptions.annotations.CharSizeException;
 import com.example.userservice.utils.exceptions.annotations.EmailPatternException;
 import com.example.userservice.utils.exceptions.annotations.RequiredParameterIsEmptyException;
@@ -13,17 +13,23 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+
 @RestControllerAdvice
 public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
-    @ResponseBody
+
+
     @ExceptionHandler({CharSizeException.class,
             EmailPatternException.class, RequiredParameterIsEmptyException.class,
             RoleParamsException.class})
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    protected ErrorDTO requestParameterExceptionHandler(RequestException ex) {
-     return new ErrorDTO(ex.getCode(), ex.getMessage());
+    public @ResponseBody ErrorResponse requestParameterExceptionHandler(RequestException ex)
+    {
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage());
+        errorResponse.setLogref("error: " + ex.getCode());
+        return errorResponse;
 
     }
+
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public @ResponseBody ErrorResponse handleUserNotFound(UserNotFoundException ex)
@@ -31,7 +37,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage());
-                errorResponse.setLogref("error");
+                errorResponse.setLogref("error: " + ex.getCode());
         return errorResponse;
     }
 
@@ -43,7 +49,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage());
-                errorResponse.setLogref("error");
+                errorResponse.setLogref("error: " + ex.getCode());
         return errorResponse;
     }
 
@@ -56,7 +62,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage());
-                errorResponse.setLogref("error");
+                errorResponse.setLogref("error: " + ex.getCode());
         return errorResponse;
     }
 
@@ -69,7 +75,7 @@ public class ExceptionAdviceController extends ResponseEntityExceptionHandler {
     {
         ErrorResponse errorResponse = new ErrorResponse(
                 ex.getMessage());
-                errorResponse.setLogref("error");
+                errorResponse.setLogref("error: " + ex.getCode());
             return errorResponse;
     }
 

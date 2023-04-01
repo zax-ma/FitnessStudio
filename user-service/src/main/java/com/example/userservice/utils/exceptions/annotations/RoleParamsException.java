@@ -11,7 +11,7 @@ public class RoleParamsException extends RequestException {
     }
     @Override
     public String getCode() {
-        return "06";
+        return "16";
     }
 
     @Override

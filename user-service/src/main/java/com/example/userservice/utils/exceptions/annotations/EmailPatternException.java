@@ -11,7 +11,7 @@ public class EmailPatternException extends RequestException {
 
     @Override
     public String getCode() {
-        return "02";
+        return "12";
     }
 
     @Override

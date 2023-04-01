@@ -1,12 +1,10 @@
 package com.example.userservice.config;
 
 import com.example.userservice.dao.entity.UserEntity;
-import com.example.userservice.dto.EUserRole;
 import com.example.userservice.dto.UserAdminDTO;
 import com.example.userservice.dto.UserDTO;
 import com.example.userservice.dto.UserRegistrationDTO;
 import com.example.userservice.utils.convertors.EntityToDtoConverter;
-import com.example.userservice.utils.convertors.RoleConverter;
 import com.example.userservice.utils.convertors.UserAdminDtoToEntityConverter;
 import com.example.userservice.utils.convertors.UserRegistrationDtoToEntityConverter;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +27,4 @@ public class ConverterConfig {
         return new EntityToDtoConverter();
     }
 
-    @Bean
-    public Converter<UserEntity, EUserRole> userRoleConverter() {return new RoleConverter();
-    }
 }
