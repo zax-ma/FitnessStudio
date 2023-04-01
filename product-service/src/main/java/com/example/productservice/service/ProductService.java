@@ -26,11 +26,14 @@ public class ProductService implements IProductService {
 
     private final Converter<ProductEntity, ProductDTO> toDtoConverter;
 
+
     public ProductService(IProductRepository repository,
                           Converter<ProductEntity, ProductDTO> toDtoConverter) {
         this.repository = repository;
         this.toDtoConverter = toDtoConverter;
     }
+
+
 
     @Override
     public void create(ProductEntity product) {

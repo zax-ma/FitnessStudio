@@ -19,7 +19,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -30,24 +29,22 @@ public class RecipeService implements IRecipeService {
     private final Converter<RecipeEntity, RecipeDTO> toDtoConverter;
     private final IRecipeRepository repository;
     private final IProductService productService;
-    private final ConversionService conversionService;
 
     public RecipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
                          IRecipeRepository repository,
-                         IProductService productService,
-                         ConversionService conversionService) {
+                         IProductService productService) {
         this.toDtoConverter = toDtoConverter;
         this.repository = repository;
         this.productService = productService;
-        this.conversionService = conversionService;
+
     }
 
     @Override
-    public void create(NewRecipeDTO recipe) {
+    public void create(RecipeEntity recipe) {
         if(recipe.getTitle().equals(this.repository.findByTitle(recipe.getTitle())) ){
             throw new RuntimeException("Recipe is already created");
         }
-            this.repository.save(this.convertToEntity(recipe));
+            this.repository.save(recipe);
     }
 
     @Override
@@ -99,18 +96,4 @@ public class RecipeService implements IRecipeService {
                 .collect(Collectors.toList());
     }
 
-    private RecipeEntity convertToEntity(NewRecipeDTO recipeCreateDTO) {
-
-        RecipeEntity recipe = new RecipeEntity();
-        AuxFieldsDTO aux = new AuxFieldsDTO();
-        recipe.setUuid(aux.getUuid());
-        recipe.setDt_create(aux.getDt_create());
-        recipe.setDt_update(aux.getDt_update());
-        recipe.setTitle(recipeCreateDTO.getTitle());
-        List<IngredientDTO> ingredients = recipeCreateDTO.getComposition();
-        List<IngredientEntity> productList = convertToProduct(ingredients);
-        recipe.setComposition(productList);
-
-        return recipe;
-    }
 }

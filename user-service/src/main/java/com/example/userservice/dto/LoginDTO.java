@@ -1,8 +1,12 @@
 package com.example.userservice.dto;
 
-public class LoginDTO {
+import com.example.userservice.utils.validation.annotation.EmailPattern;
+import com.example.userservice.utils.validation.annotation.NotEmptyNorBlank;
 
+public class LoginDTO {
+    @NotEmptyNorBlank
     private String mail;
+    @NotEmptyNorBlank
     private String password;
 
     public LoginDTO(String mail, String password) {

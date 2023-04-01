@@ -19,13 +19,17 @@ public class RecipeController {
 
     IRecipeService service;
 
-    public RecipeController(IRecipeService service) {
+    Converter<NewRecipeDTO, RecipeEntity> converter;
+
+
+    public RecipeController(IRecipeService service, Converter<NewRecipeDTO, RecipeEntity> converter) {
         this.service = service;
+        this.converter = converter;
     }
 
     @PostMapping
     public ResponseEntity<?> createProduct(@RequestBody NewRecipeDTO recipe) {
-        this.service.create(recipe);
+        this.service.create(this.converter.convert(recipe));
         return ResponseEntity.status(HttpStatus.CREATED)
                 .build();
     }

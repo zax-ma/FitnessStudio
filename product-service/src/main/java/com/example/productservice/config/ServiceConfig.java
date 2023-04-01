@@ -24,9 +24,8 @@ public class ServiceConfig {
 
     public IRecipeService recipeService(Converter<RecipeEntity, RecipeDTO> toDtoConverter,
                                         IRecipeRepository repository,
-                                        IProductService productService,
-                                        ConversionService conversionService){
-        return new RecipeService(toDtoConverter,repository,productService, conversionService);
+                                        IProductService productService){
+        return new RecipeService(toDtoConverter,repository,productService);
     }
 
 }
