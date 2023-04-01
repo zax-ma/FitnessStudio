@@ -4,15 +4,14 @@ import com.example.productservice.dao.entity.IngredientEntity;
 import com.example.productservice.dao.entity.ProductEntity;
 import com.example.productservice.dao.entity.RecipeEntity;
 import com.example.productservice.dao.repo.IRecipeRepository;
-import com.example.productservice.dto.AuxFieldsDTO;
 import com.example.productservice.dto.PageDTO;
 import com.example.productservice.dto.recipe.IngredientDTO;
 import com.example.productservice.dto.recipe.NewRecipeDTO;
 import com.example.productservice.dto.recipe.RecipeDTO;
 import com.example.productservice.service.api.IProductService;
 import com.example.productservice.service.api.IRecipeService;
-import jakarta.persistence.EntityNotFoundException;
-import org.springframework.core.convert.ConversionService;
+import com.example.productservice.utils.exceptions.RecipeExistException;
+import com.example.productservice.utils.exceptions.RecipeNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -42,7 +41,7 @@ public class RecipeService implements IRecipeService {
     @Override
     public void create(RecipeEntity recipe) {
         if(recipe.getTitle().equals(this.repository.findByTitle(recipe.getTitle())) ){
-            throw new RuntimeException("Recipe is already created");
+            throw new RecipeExistException("Recipe is already created");
         }
             this.repository.save(recipe);
     }
@@ -70,7 +69,7 @@ public class RecipeService implements IRecipeService {
     @Override
     public void update(UUID id, Timestamp dt_update, NewRecipeDTO recipe) {
         RecipeEntity recipeUpdate = this.repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("uuid"));
+                .orElseThrow(() -> new RecipeNotFoundException("Recipe " + id +"was not found"));
 
         if (Timestamp.valueOf(recipeUpdate.getDt_update()).equals(dt_update)){
             List<IngredientEntity> ingredient = convertToProduct(recipe.getComposition());

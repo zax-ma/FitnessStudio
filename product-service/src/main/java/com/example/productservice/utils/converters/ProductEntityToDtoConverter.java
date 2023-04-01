@@ -1,4 +1,4 @@
-package com.example.productservice.utils;
+package com.example.productservice.utils.converters;
 
 import com.example.productservice.dao.entity.ProductEntity;
 import com.example.productservice.dto.product.ProductDTO;

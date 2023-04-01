@@ -1,4 +1,4 @@
-package com.example.userservice.utils.exceptions.errors;
+package com.example.productservice.utils.exceptions;
 
 public class ErrorResponse {
     private String logref;

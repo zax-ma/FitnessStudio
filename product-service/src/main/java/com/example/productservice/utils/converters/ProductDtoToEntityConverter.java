@@ -1,16 +1,15 @@
-package com.example.productservice.utils;
+package com.example.productservice.utils.converters;
 
 import com.example.productservice.dao.entity.ProductEntity;
-import com.example.productservice.dto.product.NewProductDTO;
 import com.example.productservice.dto.AuxFieldsDTO;
+import com.example.productservice.dto.product.ProductDTO;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NewProductDtoToEntityConverter implements Converter<NewProductDTO, ProductEntity> {
-
+public class ProductDtoToEntityConverter implements Converter<ProductDTO, ProductEntity> {
     @Override
-    public ProductEntity convert(NewProductDTO source) {
+    public ProductEntity convert(ProductDTO source) {
         AuxFieldsDTO auxFieldsDTO = new AuxFieldsDTO();
         return new ProductEntity(
                 auxFieldsDTO.getUuid(),
@@ -22,7 +21,5 @@ public class NewProductDtoToEntityConverter implements Converter<NewProductDTO, 
                 source.getProteins(),
                 source.getFats(),
                 source.getCarbohydrates());
-
     }
-
 }

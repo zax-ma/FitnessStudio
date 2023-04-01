@@ -6,8 +6,8 @@ import com.example.productservice.dto.PageDTO;
 import com.example.productservice.dto.product.NewProductDTO;
 import com.example.productservice.dto.product.ProductDTO;
 import com.example.productservice.service.api.IProductService;
-import com.example.userservice.utils.exceptions.errors.UserNotFoundException;
-import jakarta.persistence.EntityNotFoundException;
+import com.example.productservice.utils.exceptions.ProductExistException;
+import com.example.productservice.utils.exceptions.ProductNotFoundException;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -38,7 +38,7 @@ public class ProductService implements IProductService {
     @Override
     public void create(ProductEntity product) {
         if(product.getTitle().equals(this.repository.findByTitle(product.getTitle())) ){
-            throw new RuntimeException("Product is already added");
+            throw new ProductExistException("Product is already added");
         }
         this.repository.save(product);
     }
@@ -67,12 +67,12 @@ public class ProductService implements IProductService {
     public ProductEntity getById(UUID uuid) {
 
         return this.repository.findById(uuid)
-                .orElseThrow(() -> new UserNotFoundException("Product with uuid " + uuid + " was not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product with uuid " + uuid + " was not found"));
     }
     @Override
     public void updateProduct(UUID id, Timestamp dt_update, NewProductDTO product) {
             ProductEntity productUpdate = this.repository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("uuid"));
+                    .orElseThrow(() -> new ProductNotFoundException("Product with uuid " + id + " was not found"));
 
         if (Timestamp.valueOf(productUpdate.getDt_update()).equals(dt_update)) {
             updatingProduct(product, productUpdate);

@@ -7,7 +7,7 @@ import com.example.productservice.dto.product.ProductDTO;
 import com.example.productservice.dto.recipe.NewRecipeDTO;
 import com.example.productservice.dto.recipe.RecipeDTO;
 import com.example.productservice.service.api.IProductService;
-import com.example.productservice.utils.*;
+import com.example.productservice.utils.converters.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.convert.converter.Converter;
 
