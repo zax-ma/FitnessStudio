@@ -2,7 +2,6 @@ HELP.md
 target/
 git_key
 git_key.pub
-pom.xml
 mvnw
 mvnw.cmd
 .mvn/**

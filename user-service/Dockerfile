@@ -3,3 +3,5 @@ MAINTAINER MZ
 
 COPY target/user-service-1.jar user-service.jar
 ENTRYPOINT ["java", "-jar", "/user-service.jar"]
+
+EXPOSE 8080
